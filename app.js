@@ -3,8 +3,8 @@
  ********************************************/
 
 // Replace with your actual tokens/endpoints
-mapboxgl.accessToken = "pk.eyJ1IjoidG9tMjYxMSIsWx5c2c0Ymt1In0.IDbRSRluguViXa6h1_18qA";  // Replace with your Mapbox API Key
-const TOMTOM_API_KEY = "Qi1NFCtPwr6FJrA";  
+mapboxgl.accessToken = "p1In0.IDbRSRluguViXa6h1_18qA";  // Replace with your Mapbox API Key
+const TOMTOM_API_KEY = "";  
 const ML_SERVER_URL = "http://localhost:5000/predictCongestion"; // Your real ML endpoint
 
 // Initialize the map
