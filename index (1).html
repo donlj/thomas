@@ -1,0 +1,2070 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Travel Planner</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      color: #333;
+      background-color: #f9f9f9;
+    }
+
+    /* Header Styles */
+    header {
+      background-color: #15222d;
+      color: white;
+      padding: 15px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+      font-family: 'Montserrat', sans-serif;
+      letter-spacing: 1px;
+    }
+
+    nav {
+      display: flex;
+      gap: 30px;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      padding: 5px 0;
+      position: relative;
+    }
+
+    nav a.active::after,
+    nav a:hover::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background-color: #3a88fe;
+    }
+
+    .search-container {
+      display: flex;
+      height: 36px;
+    }
+
+    .search-container input {
+      width: 250px;
+      border-radius: 4px 0 0 4px;
+      border: none;
+      padding: 0 15px;
+    }
+
+    .search-button {
+      background-color: #3a88fe;
+      color: white;
+      border: none;
+      border-radius: 0 4px 4px 0;
+      padding: 0 15px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .search-button:hover {
+      background-color: #2a6dc9;
+    }
+
+    /* User Dropdown */
+    .user-info {
+      position: relative;
+    }
+
+    .user-dropdown {
+      position: relative;
+    }
+
+    .user-icon {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      padding: 8px 12px;
+      border-radius: 20px;
+      transition: background-color 0.3s ease;
+    }
+
+    .user-icon:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .user-icon i {
+      margin-right: 8px;
+    }
+
+    .dropdown-menu {
+      position: absolute;
+      right: 0;
+      top: 100%;
+      background-color: white;
+      border-radius: 4px;
+      width: 200px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      display: none;
+      z-index: 1000;
+    }
+
+    .user-dropdown.active .dropdown-menu {
+      display: block;
+    }
+
+    .dropdown-menu a {
+      color: #333;
+      padding: 12px 15px;
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+    }
+
+    .dropdown-menu a i {
+      width: 25px;
+    }
+
+    .dropdown-menu a:hover {
+      background-color: #f5f5f5;
+    }
+
+    .dropdown-divider {
+      height: 1px;
+      background-color: #eee;
+      margin: 5px 0;
+    }
+
+    /* Banner Section */
+    .banner {
+      position: relative;
+      height: 400px;
+      background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3));
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .banner img {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -1;
+    }
+
+    .welcome-banner {
+      background-color: rgba(255, 255, 255, 0.9);
+      padding: 30px;
+      border-radius: 10px;
+      text-align: center;
+      max-width: 500px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      z-index: 1;
+    }
+
+    .welcome-banner h1 {
+      margin-top: 0;
+      color: #15222d;
+    }
+
+    .welcome-banner p {
+      color: #555;
+    }
+
+    /* Destination Section */
+    section {
+      padding: 60px 40px;
+    }
+
+    h2 {
+      text-align: center;
+      font-size: 32px;
+      margin-bottom: 40px;
+      color: #15222d;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 30px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background-color: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      position: relative;
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .card .place-name {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background-color: #3a88fe;
+      color: white;
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-weight: 500;
+    }
+
+    .card h3 {
+      padding: 0 20px;
+      margin-top: 20px;
+    }
+
+    .card p {
+      padding: 0 20px;
+      color: #666;
+    }
+
+    .card button {
+      margin: 15px 20px 20px;
+      padding: 10px 20px;
+      background-color: #15222d;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .card button:hover {
+      background-color: #0c151d;
+    }
+
+    /* Destination Explorer */
+    .destination-categories {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    .category-button {
+      padding: 10px 20px;
+      background-color: #f0f0f0;
+      border: none;
+      border-radius: 30px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .category-button.active, .category-button:hover {
+      background-color: #3a88fe;
+      color: white;
+    }
+
+    .destinations-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 30px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .destination-item {
+      transition: opacity 0.3s ease;
+    }
+
+    .destination-item.hidden {
+      display: none;
+    }
+
+    .destination-item.fade-out {
+      opacity: 0.3;
+    }
+
+    .destination-card {
+      background-color: white;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      height: 100%;
+      transition: transform 0.3s ease;
+    }
+
+    .destination-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .destination-image {
+      position: relative;
+      height: 200px;
+    }
+
+    .destination-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .destination-name {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background-color: #3a88fe;
+      color: white;
+      padding: 6px 15px;
+      border-radius: 20px;
+      font-weight: 500;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .destination-info {
+      padding: 25px;
+    }
+
+    .destination-info h3 {
+      margin-top: 0;
+      margin-bottom: 10px;
+      color: #15222d;
+    }
+
+    .destination-info p {
+      color: #666;
+      margin-bottom: 20px;
+    }
+
+    .destination-details {
+      background-color: #f9f9f9;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+
+    .destination-details p {
+      margin: 5px 0;
+      font-size: 14px;
+      color: #333;
+    }
+
+    .destination-details i {
+      color: #3a88fe;
+      width: 20px;
+      margin-right: 10px;
+    }
+
+    .explore-btn {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #15222d;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      text-decoration: none;
+      text-align: center;
+    }
+
+    .explore-btn:hover {
+      background-color: #0c151d;
+    }
+
+    /* Weather information */
+    .weather-info {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 20px;
+      background: linear-gradient(to right, #e7f0fd, #f3f8ff);
+      border-radius: 0 0 15px 15px;
+      color: #333;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+
+    .weather-info p {
+      margin: 5px 0;
+      display: flex;
+      align-items: center;
+    }
+
+    .weather-info i {
+      margin-right: 5px;
+      color: #007BFF;
+    }
+
+    /* Trip planner section */
+    #trip-planner {
+      background: rgba(10, 25, 41, 0.8);
+      padding: 50px 30px;
+      border-radius: 15px;
+      margin: 40px auto;
+      max-width: 1200px;
+    }
+
+    .planner-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 30px;
+    }
+
+    .planner-form {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .planner-form .form-group {
+      margin-bottom: 20px;
+    }
+
+    .planner-form label {
+      display: block;
+      margin-bottom: 8px;
+      color: #333;
+      font-weight: 500;
+    }
+
+    .planner-form select, 
+    .planner-form input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 16px;
+      color: #333;
+      background-color: #f9f9f9;
+    }
+
+    .planner-form select:focus, 
+    .planner-form input:focus {
+      outline: none;
+      border-color: #007BFF;
+      box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+    }
+
+    #budget {
+      width: 100%;
+      margin-top: 10px;
+      background: #f9f9f9;
+    }
+
+    #budget-value {
+      display: block;
+      text-align: center;
+      font-weight: bold;
+      margin-top: 10px;
+      color: #007BFF;
+      font-size: 18px;
+    }
+
+    .btn-plan {
+      margin-top: 30px;
+      background: linear-gradient(to right, #007BFF, #00c6ff);
+      font-weight: 600;
+      font-size: 18px;
+      padding: 15px;
+      width: 100%;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .btn-plan:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Itinerary results */
+    .itinerary-results {
+      display: none;
+      background: white;
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      color: #333;
+      margin-top: 30px;
+      width: 100%;
+    }
+
+    .itinerary-results h3 {
+      color: #18658f;
+      border-bottom: 2px solid #eee;
+      padding-bottom: 10px;
+    }
+
+    .itinerary-day {
+      margin: 20px 0;
+      padding-left: 20px;
+      border-left: 3px solid #007BFF;
+    }
+
+    .itinerary-day h4 {
+      color: #15222d;
+      margin-bottom: 10px;
+    }
+
+    .budget-recommendations {
+      margin-top: 25px;
+      padding: 15px;
+      background-color: #f9f9f9;
+      border-radius: 10px;
+    }
+
+    .budget-recommendations h4 {
+      color: #18658f;
+      margin-bottom: 8px;
+    }
+
+    /* Improved Festivals Section */
+    #festivals {
+      padding: 60px 30px;
+      background-color: #15222d;
+      color: white;
+    }
+
+    .festivals-container {
+      position: relative;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .festivals-controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .festival-nav-button {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s;
+      margin: 0 10px;
+    }
+
+    .festival-nav-button:hover {
+      background: rgba(255, 255, 255, 0.4);
+      transform: scale(1.1);
+    }
+
+    .festivals-indicator {
+      font-size: 18px;
+      font-weight: 500;
+      color: white;
+      margin: 0 15px;
+    }
+
+    .festivals-slider {
+      position: relative;
+      overflow: hidden;
+      border-radius: 15px;
+    }
+
+    .festivals-track {
+      display: flex;
+      transition: transform 0.5s ease;
+    }
+
+    .festival-item {
+      min-width: 100%;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+
+    .festival-card {
+      display: flex;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      height: 300px;
+    }
+
+    .festival-image {
+      position: relative;
+      width: 40%;
+      overflow: hidden;
+    }
+
+    .festival-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .festival-date {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      background: rgba(0, 123, 255, 0.9);
+      color: white;
+      padding: 10px 5px;
+      border-radius: 8px;
+      text-align: center;
+      min-width: 60px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .festival-date .month {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .festival-date .day {
+      display: block;
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    .festival-content {
+      width: 60%;
+      padding: 25px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .festival-content h3 {
+      font-size: 22px;
+      color: #18658f;
+      margin-top: 0;
+      margin-bottom: 10px;
+    }
+
+    .festival-location {
+      color: #555;
+      margin-bottom: 15px;
+      font-size: 15px;
+    }
+
+    .festival-location i {
+      color: #007BFF;
+      margin-right: 8px;
+    }
+
+    .festival-description {
+      color: #333;
+      line-height: 1.5;
+      flex-grow: 1;
+    }
+
+    .festival-content button {
+      align-self: flex-start;
+      padding: 10px 20px;
+      margin-top: 10px;
+      margin-left: 0;
+      width: auto;
+    }
+
+    /* Testimonials */
+    .testimonial {
+      background: rgba(255, 255, 255, 0.9);
+      padding: 25px;
+      border-radius: 15px;
+      margin: 20px 0;
+      position: relative;
+    }
+
+    .testimonial-image {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      object-fit: cover;
+      position: absolute;
+      top: -25px;
+      left: 30px;
+      border: 5px solid white;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    .testimonial-content {
+      margin-top: 50px;
+      font-style: italic;
+      color: #444;
+    }
+
+    .testimonial-author {
+      text-align: right;
+      font-weight: bold;
+      margin-top: 10px;
+      color: #18658f;
+    }
+
+    .user-info {
+      position: relative;
+      display: flex;
+      align-items: center;
+      margin-left: 15px;
+    }
+
+    .user-info .user-dropdown {
+      position: relative;
+    }
+
+    .user-icon {
+      display: flex;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 8px 15px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .user-icon:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .user-icon i {
+      margin-right: 8px;
+    }
+
+    .user-icon .fa-chevron-down {
+      margin-left: 8px;
+      font-size: 12px;
+      transition: transform 0.3s;
+    }
+
+    .user-dropdown.active .fa-chevron-down {
+      transform: rotate(180deg);
+    }
+
+    /* Newsletter */
+    #newsletter {
+      background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1678139192695-2af20184634b');
+      background-size: cover;
+      background-position: center;
+      color: white;
+    }
+
+    #newsletter button {
+      background: linear-gradient(to right, #007BFF, #00c6ff);
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+      font-weight: 600;
+    }
+
+    #newsletter button:hover {
+      transform: translateY(-3px);
+    }
+
+    /* Scroll to top button */
+    .scroll-to-top {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: linear-gradient(to right, #007BFF, #00c6ff);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.4s;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      z-index: 1000;
+    }
+
+    .scroll-to-top.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .scroll-to-top:hover {
+      transform: translateY(-5px);
+    }
+
+    /* Footer */
+    footer {
+      background-color: #15222d;
+      color: white;
+      padding: 50px 30px 20px;
+    }
+
+    footer a {
+      color: #b3b3b3;
+      text-decoration: none;
+      transition: color 0.3s;
+      margin: 0 10px;
+    }
+
+    footer a:hover {
+      color: #00c6ff;
+      text-decoration: underline;
+    }
+
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      max-width: 1200px;
+      margin: 0 auto;
+      flex-wrap: wrap;
+    }
+
+    .footer-section {
+      flex: 1;
+      min-width: 250px;
+      margin-bottom: 20px;
+    }
+
+    .footer-section h3 {
+      color: #ffffff;
+      margin-bottom: 15px;
+      font-size: 18px;
+    }
+
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    .social-links a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: #1e2a38;
+      color: white;
+      font-size: 20px;
+      transition: all 0.3s;
+    }
+
+    .social-links a:hover {
+      background-color: #007BFF;
+      transform: translateY(-5px);
+    }
+
+    .highlight {
+      animation: pulse 1.5s ease-in-out;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
+      50% { transform: scale(1.05); box-shadow: 0 8px 12px rgba(0, 123, 255, 0.4); }
+      100% { transform: scale(1); box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        text-align: center;
+        padding: 15px 10px;
+      }
+      
+      header nav {
+        margin-top: 15px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      
+      header nav a {
+        margin: 5px;
+      }
+      
+      .welcome-banner h1 {
+        font-size: 2rem;
+      }
+      
+      .welcome-banner p {
+        font-size: 1rem;
+      }
+      
+      .banner img {
+        height: 300px;
+      }
+      
+      .footer-content {
+        flex-direction: column;
+        text-align: center;
+      }
+      
+      .social-links {
+        justify-content: center;
+      }
+      
+      .search-container {
+        margin-top: 15px;
+        width: 100%;
+      }
+      
+      header input {
+        width: 100%;
+      }
+
+      .festival-card {
+        flex-direction: column;
+        height: auto;
+      }
+      
+      .festival-image, .festival-content {
+        width: 100%;
+      }
+      
+      .festival-image {
+        height: 200px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      section {
+        padding: 30px 15px;
+      }
+      
+      h2 {
+        font-size: 24px;
+      }
+      
+      .card {
+        margin-bottom: 20px;
+      }
+      
+      .welcome-banner {
+        padding: 20px;
+        width: 80%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+  <header>
+    <div class="logo">Wanderly</div>
+    <nav>
+      <a href="#" class="active">Home</a>
+      <a href="destinations.html">Destinations</a>
+      <a href="packages.html">Packages</a>
+      <a href="login.html" id="loginLink">Login</a>
+    </nav>
+    <div class="search-container">
+      <input type="text" id="searchInput" placeholder="Search destinations...">
+      <button class="search-button"><i class="fas fa-search"></i></button>
+    </div>
+    <div class="user-info">
+      <div class="user-dropdown">
+        <div class="user-icon">
+          <i class="fas fa-user-circle"></i>
+          <span id="currentUser">donlj</span>
+          <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="dropdown-menu">
+          <a href="profile.html"><i class="fas fa-user"></i> My Profile</a>
+          <a href="bookings.html"><i class="fas fa-list"></i> My Bookings</a>
+          <a href="settings.html"><i class="fas fa-cog"></i> Account Settings</a>
+          <div class="dropdown-divider"></div>
+          <a href="#" id="logoutButton"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+      </div>
+    </div>
+  </header>  
+
+  <!-- Main Banner -->
+  <section class="banner">
+    <div class="welcome-banner">
+      <h1>Welcome to Wanderly!</h1>
+      <p>Your ultimate guide to exploring the world.</p>
+      <p>Current Date: <span id="currentDate">2025-03-08</span></p>
+    </div>
+    <img src="https://muvemm.com/wp-content/uploads/2022/01/Travel-Trends-For-2022-Blog-Image-060122-1.jpg" alt="Popular Destination">
+  </section>
+
+  <section id="destinations">
+    <h2>Popular Destinations</h2>
+    <div class="grid">
+      <div class="card">
+        <img src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/17/15/6d/d6/paris.jpg?w=1400&h=1400&s=1" alt="Paris">
+        <div class="place-name">Paris</div>
+        <h3>Paris, France</h3>
+        <p>Explore the beauty of Paris with its iconic Eiffel Tower, world-class museums, and charming cafes along the Seine.</p>
+        <button onclick="showDestinationDetails('Paris')">Explore Paris</button>
+      </div>
+      <div class="card">
+        <img src="https://plus.unsplash.com/premium_photo-1661914240950-b0124f20a5c1?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8dG9reW8lMjBjaXR5fGVufDB8fDB8fHww" alt="Tokyo">
+        <div class="place-name">Tokyo</div>
+        <h3>Tokyo, Japan</h3>
+        <p>Discover the charm of Tokyo with its perfect blend of traditional culture and cutting-edge technology.</p>
+        <button onclick="showDestinationDetails('Tokyo')">Explore Tokyo</button>
+      </div>
+      <div class="card">
+        <img src="https://www.offsoho.com/images/NYC_000021208828-2100-980.jpg" alt="New York">
+        <div class="place-name">New York</div>
+        <h3>New York City, USA</h3>
+        <p>Experience the magic of New York with its iconic skyline, Broadway shows, and diverse neighborhoods.</p>
+        <button onclick="showDestinationDetails('New York')">Explore New York</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="destinations-explorer">
+    <h2>Explore Our Destinations</h2>
+    
+    <div class="destination-categories">
+      <button class="category-button active" data-category="all">All Destinations</button>
+      <button class="category-button" data-category="europe">Europe</button>
+      <button class="category-button" data-category="asia">Asia</button>
+      <button class="category-button" data-category="americas">Americas</button>
+      <button class="category-button" data-category="africa">Africa</button>
+    </div>
+    
+    <div class="destinations-grid" id="destinations-grid">
+      <!-- Paris -->
+      <div class="destination-item" data-category="europe">
+        <div class="destination-card">
+          <div class="destination-image">
+            <img src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/17/15/6d/d6/paris.jpg?w=1400&h=1400&s=1" alt="Paris">
+            <div class="destination-name">Paris</div>
+          </div>
+          <div class="destination-info">
+            <h3>Paris, France</h3>
+            <p>The City of Light, famous for the Eiffel Tower and Louvre Museum.</p>
+            <div class="destination-details">
+              <p><i class="fas fa-calendar"></i> Best time: April-June, Sept-Nov</p>
+              <p><i class="fas fa-language"></i> Language: French</p>
+              <p><i class="fas fa-dollar-sign"></i> Currency: Euro (EUR)</p>
+            </div>
+            <button class="explore-btn" onclick="redirectToDestination('Paris')">Explore Paris</button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Tokyo -->
+      <div class="destination-item" data-category="asia">
+        <div class="destination-card">
+          <div class="destination-image">
+            <img src="https://plus.unsplash.com/premium_photo-1661914240950-b0124f20a5c1?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8dG9reW8lMjBjaXR5fGVufDB8fDB8fHww" alt="Tokyo">
+            <div class="destination-name">Tokyo</div>
+          </div>
+          <div class="destination-info">
+            <h3>Tokyo, Japan</h3>
+            <p>Japan's bustling capital, mixing ultramodern with traditional.</p>
+            <div class="destination-details">
+              <p><i class="fas fa-calendar"></i> Best time: March-May, Sept-Nov</p>
+              <p><i class="fas fa-language"></i> Language: Japanese</p>
+              <p><i class="fas fa-dollar-sign"></i> Currency: Japanese Yen (JPY)</p>
+            </div>
+            <button class="explore-btn" onclick="redirectToDestination('Tokyo')">Explore Tokyo</button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- New York -->
+      <div class="destination-item" data-category="americas">
+        <div class="destination-card">
+          <div class="destination-image">
+            <img src="https://www.offsoho.com/images/NYC_000021208828-2100-980.jpg" alt="New York">
+            <div class="destination-name">New York</div>
+          </div>
+          <div class="destination-info">
+            <h3>New York, USA</h3>
+            <p>The Big Apple, known for its iconic skyline and cultural diversity.</p>
+            <div class="destination-details">
+              <p><i class="fas fa-calendar"></i> Best time: April-June, Sept-Nov</p>
+              <p><i class="fas fa-language"></i> Language: English</p>
+              <p><i class="fas fa-dollar-sign"></i> Currency: US Dollar (USD)</p>
+            </div>
+            <button class="explore-btn" onclick="redirectToDestination('New York')">Explore New York</button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Rome -->
+      <div class="destination-item" data-category="europe">
+        <div class="destination-card">
+          <div class="destination-image">
+            <img src="https://res.cloudinary.com/dtljonz0f/image/upload/f_auto/q_auto/v1/gc-v1/rome-and-vatican-pass/iStock_000024461153_Full.jpg" alt="Rome">
+            <div class="destination-name">Rome</div>
+          </div>
+          <div class="destination-info">
+            <h3>Rome, Italy</h3>
+            <p>The Eternal City with ancient ruins including the Colosseum.</p>
+            <div class="destination-details">
+              <p><i class="fas fa-calendar"></i> Best time: April-June, Sept-Oct</p>
+              <p><i class="fas fa-language"></i> Language: Italian</p>
+              <p><i class="fas fa-dollar-sign"></i> Currency: Euro (EUR)</p>
+            </div>
+            <button class="explore-btn" onclick="redirectToDestination('Rome')">Explore Rome</button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Bangkok -->
+      <div class="destination-item" data-category="asia">
+        <div class="destination-card">
+          <div class="destination-image">
+            <img src="https://a.cdn-hotels.com/gdcs/production143/d1112/c4fedab1-4041-4db5-9245-97439472cf2c.jpg" alt="Bangkok">
+            <div class="destination-name">Bangkok</div>
+          </div>
+          <div class="destination-info">
+            <h3>Bangkok, Thailand</h3>
+            <p>Thailand's vibrant capital with ornate shrines and lively street life.</p>
+            <div class="destination-details">
+              <p><i class="fas fa-calendar"></i> Best time: November-February</p>
+              <p><i class="fas fa-language"></i> Language: Thai</p>
+              <p><i class="fas fa-dollar-sign"></i> Currency: Thai Baht (THB)</p>
+            </div>
+            <button class="explore-btn" onclick="redirectToDestination('Bangkok')">Explore Bangkok</button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Cape Town -->
+      <div class="destination-item" data-category="africa">
+        <div class="destination-card">
+          <div class="destination-image">
+            <img src="https://www.onthegotours.com/repository/The-beautiful-coastline-of-Cape-Town-644441529508629.jpg" alt="Cape Town">
+            <div class="destination-name">Cape Town</div>
+          </div>
+          <div class="destination-info">
+            <h3>Cape Town, South Africa</h3>
+            <p>South African port city with iconic Table Mountain.</p>
+            <div class="destination-details">
+              <p><i class="fas fa-calendar"></i> Best time: Sept-Nov, March-May</p>
+              <p><i class="fas fa-language"></i> Language: Afrikaans, English, Xhosa</p>
+              <p><i class="fas fa-dollar-sign"></i> Currency: South African Rand (ZAR)</p>
+            </div>
+            <button class="explore-btn" onclick="redirectToDestination('Cape Town')">Explore Cape Town</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trip Planner Tool -->
+  <section id="trip-planner">
+    <h2>Plan Your Perfect Trip</h2>
+    <div class="planner-container">
+      <div class="planner-form">
+        <div class="form-group">
+          <label for="destination">Destination</label>
+          <select id="destination">
+            <option value="">Select a destination</option>
+            <option value="paris">Paris</option>
+            <option value="tokyo">Tokyo</option>
+            <option value="new-york">New York</option>
+            <option value="bali">Bali</option>
+            <option value="rome">Rome</option>
+            <option value="barcelona">Barcelona</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="dates">Travel Dates</label>
+          <input type="text" id="dates" placeholder="Select dates" readonly>
+        </div>
+        
+        <div class="form-group">
+          <label for="travelers">Number of Travelers</label>
+          <input type="number" id="travelers" min="1" value="1">
+        </div>
+        
+        <div class="form-group">
+          <label for="budget">Budget (USD)</label>
+          <input type="range" id="budget" min="500" max="10000" step="500" value="2000">
+          <output for="budget" id="budget-value">$2000</output>
+        </div>
+        
+        <div class="form-group">
+          <label for="interests">Interests</label>
+          <select id="interests">
+            <option value="">Select your main interest</option>
+            <option value="cultural">Cultural & Historical</option>
+            <option value="adventure">Adventure & Outdoors</option>
+            <option value="food">Food & Cuisine</option>
+            <option value="relaxation">Relaxation & Wellness</option>
+            <option value="shopping">Shopping & Entertainment</option>
+          </select>
+        </div>
+        
+        <button id="plan-trip" class="btn-plan">Create My Itinerary</button>
+      </div>
+
+      <div class="itinerary-results" id="itinerary-results">
+        <h3>Your Custom Itinerary for <span id="itinerary-destination"></span></h3>
+        <div class="itinerary-content" id="itinerary-content">
+          <!-- Itinerary will be populated here -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Packages Section -->
+  <section id="packages">
+    <h2>Featured Travel Packages</h2>
+    <div class="grid">
+      <!-- Package 1 -->
+      <div class="card left">
+        <img src="https://images.tripadeal.com.au/cdn-cgi/image/format=auto,width=800/https://cstad.s3.ap-southeast-2.amazonaws.com/4843_H_241_Europe_Rebuild_WEB_HERO_1_Venice.jpg" alt="Package 1 Destination">
+        <h3>European Grand Tour</h3>
+        <p>Embark on a breathtaking 14-day journey across Europe. Explore historic cities like Paris, Rome, and Barcelona.</p>
+        <p><strong>Starting at $2999</strong></p>
+        <button onclick="redirectToBooking('European Grand Tour', 'Embark on a breathtaking 14-day journey across Europe. Explore historic cities like Paris, Rome, and Barcelona.', 2999)">Book Now</button>
+      </div>
+      
+      <!-- Package 2 -->
+      <div class="card right">
+        <img src="https://images.stockcake.com/public/0/6/1/061e4da4-dcf6-4d4c-9e9c-999525aa92aa_large/tropical-paradise-escape-stockcake.jpg" alt="Package 2 Destination">
+        <h3>Caribbean Paradise Escape</h3>
+        <p>Relax in the luxurious resorts of the Caribbean, with all-inclusive packages for an unforgettable beach vacation.</p>
+        <p><strong>Starting at $1799</strong></p>
+        <button onclick="redirectToBooking('Caribbean Paradise Escape', 'Relax in the luxurious resorts of the Caribbean, with all-inclusive packages for an unforgettable beach vacation.', 1799)">Book Now</button>
+      </div>
+      
+      <!-- Package 3 -->
+      <div class="card left">
+        <img src="https://www.konkan.me/wp-content/uploads/2024/06/1-Destinations-in-Southeast-Asia-for-Indian-Travellers.jpg" alt="Package 3 Destination">
+        <h3>Asian Adventure</h3>
+        <p>Discover the vibrant cultures, traditions, and scenic landscapes of Asia with visits to Thailand, Japan, and Bali.</p>
+        <p><strong>Starting at $2499</strong></p>
+        <button onclick="redirectToBooking('Asian Adventure', 'Discover the vibrant cultures and scenic landscapes of Asia with visits to Thailand, Japan, and Bali.', 2499)">Book Now</button>
+      </div>
+      
+      <!-- Package 4 -->
+      <div class="card">
+        <img src="https://mtsobek.imgix.net/2022/07/MTSobek-WildlifeSafari-105.jpg?auto=format&ixlib=php-3.3.1" alt="Package 4 Destination">
+        <h3>Wildlife Safari in Africa</h3>
+        <p>Explore the vast savannas of Africa with a thrilling safari experience. See the Big Five in their natural habitat.</p>
+        <p><strong>Starting at $3499</strong></p>
+        <button onclick="redirectToBooking('Wildlife Safari in Africa', 'Explore the vast savannas of Africa with a thrilling safari experience. See the Big Five in their natural habitat.', 3499)">Book Now</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials Section -->
+  <section id="testimonials">
+    <h2>What Our Travelers Say</h2>
+    <div class="grid">
+      <div class="testimonial">
+        <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="Testimonial" class="testimonial-image">
+        <div class="testimonial-content">
+          "My trip to Paris was absolutely magical! Every detail was perfectly arranged by Wanderly, from our beautiful hotel to the skip-the-line museum passes. I can't wait to book my next adventure with them!"
+        </div>
+        <div class="testimonial-author">- Sarah Johnson</div>
+      </div>
+      
+      <div class="testimonial">
+        <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="Testimonial" class="testimonial-image">
+        <div class="testimonial-content">
+          "The Asian Adventure package exceeded all expectations. The local guides were knowledgeable, accommodations were excellent, and the itinerary offered the perfect mix of must-see attractions and off-the-beaten-path experiences."
+        </div>
+        <div class="testimonial-author">- Michael Reynolds</div>
+      </div>
+      
+      <div class="testimonial">
+        <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Testimonial" class="testimonial-image">
+        <div class="testimonial-content">
+          "As a solo traveler, safety and meeting like-minded people were important to me. Wanderly provided both, along with unforgettable experiences. Their safari package was the trip of a lifetime!"
+        </div>
+        <div class="testimonial-author">- Elena Diaz</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Upcoming Festivals Section with Slider -->
+  <section id="festivals">
+    <h2>Upcoming Festivals</h2>
+    
+    <div class="festivals-container">
+      <div class="festivals-controls">
+        <button class="festival-nav-button" id="prev-festival"><i class="fas fa-chevron-left"></i></button>
+        <div class="festivals-indicator">
+          <span class="current-slide">1</span>/<span class="total-slides">5</span>
+        </div>
+        <button class="festival-nav-button" id="next-festival"><i class="fas fa-chevron-right"></i></button>
+      </div>
+      
+      <div class="festivals-slider">
+        <div class="festivals-track" id="festivals-track">
+          <!-- Festival 1 -->
+          <div class="festival-item">
+            <div class="festival-card">
+              <div class="festival-image">
+                <img src="https://www.solitarytraveller.com/wp-content/uploads/2023/11/diwali_delights_banner.webp" alt="Diwali - Festival of Lights">
+                <div class="festival-date">
+                  <span class="month">NOV</span>
+                  <span class="day">01</span>
+                </div>
+              </div>
+              <div class="festival-content">
+                <h3>Diwali - Festival of Lights</h3>
+                <p class="festival-location"><i class="fas fa-map-marker-alt"></i> India</p>
+                <p class="festival-description">Join us for the grand celebration of Diwali with vibrant decorations, fireworks, and traditional sweets.</p>
+                <button onclick="showFestivalDetails('Diwali')">Learn More</button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Festival 2 -->
+          <div class="festival-item">
+            <div class="festival-card">
+              <div class="festival-image">
+                <img src="https://www.experiencegift.com/media/wp/EG/2024/07/bus-london-at-christmas.webp" alt="Christmas">
+                <div class="festival-date">
+                  <span class="month">DEC</span>
+                  <span class="day">25</span>
+                </div>
+              </div>
+              <div class="festival-content">
+                <h3>Christmas</h3>
+                <p class="festival-location"><i class="fas fa-map-marker-alt"></i> London</p>
+                <p class="festival-description">Celebrate the joy of Christmas with family-friendly events, Christmas markets, and festive decorations.</p>
+                <button onclick="showFestivalDetails('Christmas')">Learn More</button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Festival 3 -->
+          <div class="festival-item">
+            <div class="festival-card">
+              <div class="festival-image">
+                <img src="https://media.king5.com/assets/CCT/images/e9fd9471-5dae-473b-934c-8b56af423676/e9fd9471-5dae-473b-934c-8b56af423676_1920x1080.jpg" alt="New Year's Eve">
+                <div class="festival-date">
+                  <span class="month">DEC</span>
+                  <span class="day">31</span>
+                </div>
+              </div>
+              <div class="festival-content">
+                <h3>New Year's Eve</h3>
+                <p class="festival-location"><i class="fas fa-map-marker-alt"></i> New York</p>
+                <p class="festival-description">Ring in the new year with a bang! Join the celebration featuring live music, fireworks, and a countdown party.</p>
+                <button onclick="showFestivalDetails('New Years Eve')">Learn More</button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Festival 4 -->
+          <div class="festival-item">
+            <div class="festival-card">
+              <div class="festival-image">
+                <img src="https://bookers.s3.amazonaws.com/pages/foto-16-imperatriz-joao-gabriel-riotur-1.jpg" alt="Carnival">
+                <div class="festival-date">
+                  <span class="month">FEB</span>
+                  <span class="day">14</span>
+                </div>
+              </div>
+              <div class="festival-content">
+                <h3>Carnival</h3>
+                <p class="festival-location"><i class="fas fa-map-marker-alt"></i> Rio de Janeiro</p>
+                <p class="festival-description">Experience the world-famous Carnival with vibrant parades, samba music, and colorful costumes.</p>
+                <button onclick="showFestivalDetails('Carnival')">Learn More</button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Festival 5 -->
+          <div class="festival-item">
+            <div class="festival-card">
+              <div class="festival-image">
+                <img src="https://madison-bridge.com/wp-content/uploads/2022/09/What-you-need-to-know-about-Oktoberfest-2022.jpg" alt="Oktoberfest">
+                <div class="festival-date">
+                  <span class="month">SEP</span>
+                  <span class="day">19</span>
+                </div>
+              </div>
+              <div class="festival-content">
+                <h3>Oktoberfest</h3>
+                <p class="festival-location"><i class="fas fa-map-marker-alt"></i> Munich, Germany</p>
+                <p class="festival-description">Join the fun at Oktoberfest, the world's largest beer festival, featuring traditional German food and music.</p>
+                <button onclick="showFestivalDetails('Oktoberfest')">Learn More</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <section id="newsletter">
+    <h2>Join Our Newsletter</h2>
+    <div style="max-width: 600px; margin: 0 auto; text-align: center;">
+      <p>Subscribe to our newsletter to receive exclusive travel deals, destination insights, and travel tips directly to your inbox.</p>
+      <div class="planner-form" style="background: rgba(255, 255, 255, 0.9);">
+        <div class="form-group">
+          <input type="email" id="newsletter-email" placeholder="Enter your email address">
+        </div>
+        <button id="subscribe-button">Subscribe</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="scroll-to-top">
+    <i class="fas fa-arrow-up"></i>
+  </div>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>About Wanderly</h3>
+        <p>Your trusted travel companion since 2020. We create unforgettable journeys tailored to your preferences.</p>
+      </div>
+      
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <p>
+          <a href="#destinations">Destinations</a><br>
+          <a href="#packages">Travel Packages</a><br>
+          <a href="#festivals">Festivals</a><br>
+          <a href="faq.html">FAQs</a>
+        </p>
+      </div>
+      
+      <div class="footer-section">
+        <h3>Contact Us</h3>
+        <p>
+          <i class="fas fa-envelope"></i> info@wanderly.com<br>
+          <i class="fas fa-phone"></i> +1 (800) 555-TRAVEL<br>
+          <i class="fas fa-map-marker-alt"></i> 123 Adventure St, Travelville
+        </p>
+      </div>
+      
+      <div class="footer-section">
+        <h3>Follow Us</h3>
+        <div class="social-links">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-pinterest"></i></a>
+        </div>
+      </div>
+    </div>
+    
+    <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+      <p>© 2025 Wanderly. All rights reserved.</p>
+    </div>
+  </footer>
+
+<script src="js/auth.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Initialize authentication
+  updateUserInfoDisplay();
+  
+  // Initialize main components
+  initializeDatePicker();
+  initializeDestinationFilters();
+  initializeSearchFunction();
+  initializeFestivalSlider();
+  initializeTripPlanner();
+  initializeScrollToTop();
+  addWeatherToDestinations();
+});
+
+function updateUserInfoDisplay() {
+  // Update username display
+  const userNameElement = document.getElementById('currentUser');
+  if (userNameElement) {
+    userNameElement.textContent = 'donlj';
+  }
+  
+  // Update current date
+  const currentDateElement = document.getElementById('currentDate');
+  if (currentDateElement) {
+    currentDateElement.textContent = '2025-03-08';
+  }
+  
+  // Initialize user dropdown
+  const userIcon = document.querySelector('.user-icon');
+  const userDropdown = document.querySelector('.user-dropdown');
+  const logoutButton = document.getElementById('logoutButton');
+  
+  if (userIcon && userDropdown) {
+    userIcon.addEventListener('click', function(e) {
+      e.stopPropagation();
+      userDropdown.classList.toggle('active');
+    });
+    
+    // Close dropdown when clicking elsewhere
+    document.addEventListener('click', function() {
+      userDropdown.classList.remove('active');
+    });
+  }
+  
+  if (logoutButton) {
+    logoutButton.addEventListener('click', function(e) {
+      e.preventDefault();
+      if (confirm('Are you sure you want to logout?')) {
+        alert('You have been logged out successfully.');
+        window.location.href = 'login.html';
+      }
+    });
+  }
+}
+
+function initializeDatePicker() {
+  if (typeof flatpickr === 'undefined') {
+    console.error("Flatpickr library not loaded");
+    return;
+  }
+  
+  const dateInput = document.getElementById('dates');
+  if (!dateInput) return;
+  
+  flatpickr(dateInput, {
+    mode: "range",
+    minDate: "today",
+    dateFormat: "Y-m-d",
+    defaultDate: ['2025-03-08', '2025-03-15'],
+    disableMobile: true,
+    showMonths: 2
+  });
+  
+  const budgetSlider = document.getElementById('budget');
+  const budgetValue = document.getElementById('budget-value');
+  if (budgetSlider && budgetValue) {
+    budgetSlider.addEventListener('input', function() {
+      budgetValue.textContent = '$' + this.value;
+    });
+  }
+}
+
+function initializeTripPlanner() {
+  const planTripButton = document.getElementById('plan-trip');
+  if (!planTripButton) return;
+  
+  planTripButton.addEventListener('click', function() {
+    createItinerary();
+  });
+}
+
+function createItinerary() {
+  const destination = document.getElementById('destination');
+  if (!destination || !destination.value) {
+    alert('Please select a destination.');
+    return;
+  }
+  
+  const dates = document.getElementById('dates');
+  if (!dates || !dates.value) {
+    alert('Please select travel dates.');
+    return;
+  }
+  
+  const travelers = document.getElementById('travelers');
+  const budget = document.getElementById('budget');
+  const interests = document.getElementById('interests');
+  
+  const destinationName = destination.options[destination.selectedIndex].text;
+  document.getElementById('itinerary-destination').textContent = destinationName;
+  
+  const itineraryContent = document.getElementById('itinerary-content');
+  let itineraryHTML = '';
+  
+  // Get the appropriate itinerary data
+  const itineraries = getItineraryData();
+  const interestType = interests.value || 'cultural';
+  const selectedItinerary = itineraries[destination.value] && itineraries[destination.value][interestType];
+  
+  if (selectedItinerary) {
+    // Generate itinerary days
+    selectedItinerary.forEach(item => {
+      itineraryHTML += `
+        <div class="itinerary-day">
+          <h4>${item.day}</h4>
+          <p>${item.activities}</p>
+        </div>
+      `;
+    });
+    
+    // Add budget recommendations
+    const budgetValue = parseInt(budget.value);
+    itineraryHTML += `<div class="budget-recommendations">
+      <h4>Accommodation Recommendations:</h4>
+      <p>${getBudgetRecommendation(budgetValue, 'accommodation')}</p>
+      
+      <h4>Transportation:</h4>
+      <p>${getBudgetRecommendation(budgetValue, 'transportation')}</p>
+    </div>`;
+    
+  } else {
+    itineraryHTML = '<p>No specific itinerary available for this combination. Please contact our travel advisors for a custom plan.</p>';
+  }
+  
+  itineraryContent.innerHTML = itineraryHTML;
+  
+  const itineraryResults = document.getElementById('itinerary-results');
+  itineraryResults.style.display = 'block';
+  
+  // Scroll to results
+  itineraryResults.scrollIntoView({ behavior: 'smooth' });
+  
+  // Offer to save the trip
+  setTimeout(() => {
+    if (confirm('Would you like to save this trip to your profile?')) {
+      saveTripToDatabase();
+    }
+  }, 500);
+}
+
+function getBudgetRecommendation(budget, type) {
+  if (type === 'accommodation') {
+    return budget < 1500 
+      ? 'Budget-friendly hostels and guesthouses with shared facilities.' 
+      : budget < 5000 
+        ? 'Mid-range hotels with good amenities and comfortable rooms.'
+        : 'Luxury hotels and boutique accommodations with premium services.';
+  } else if (type === 'transportation') {
+    return budget < 1500 
+      ? 'Public transportation and walking tours. Use day passes to save money.' 
+      : budget < 5000 
+        ? 'Mix of public transport and occasional taxis. Consider renting bikes or scooters.'
+        : 'Private transfers, premium rideshares, and car rentals for maximum convenience.';
+  }
+  return '';
+}
+
+function getItineraryData() {
+  return {
+    'paris': {
+      'cultural': [
+        { day: 'Day 1', activities: 'Louvre Museum, Seine River Cruise, Dinner at Montmartre' },
+        { day: 'Day 2', activities: 'Eiffel Tower, Champs-Élysées, Arc de Triomphe' },
+        { day: 'Day 3', activities: 'Versailles Palace day trip, Evening at Opera Garnier' }
+      ],
+      'food': [
+        { day: 'Day 1', activities: 'Croissant making class, Wine tasting, Dinner at Le Petit Nice' },
+        { day: 'Day 2', activities: 'Food market tour, Cheese tasting, Dinner cruise on Seine River' },
+        { day: 'Day 3', activities: 'Baguette baking class, Chocolate workshop, Michelin star dinner' }
+      ],
+      'shopping': [
+        { day: 'Day 1', activities: 'Le Marais shopping district, Galeries Lafayette' },
+        { day: 'Day 2', activities: 'Saint-Germain-des-Prés boutiques, Flea Markets' },
+        { day: 'Day 3', activities: 'Avenue Montaigne luxury shops, Souvenir shopping at Latin Quarter' }
+      ]
+    },
+    'tokyo': {
+      'cultural': [
+        { day: 'Day 1', activities: 'Meiji Shrine, Senso-ji Temple, Traditional Tea Ceremony' },
+        { day: 'Day 2', activities: 'Tokyo National Museum, Imperial Palace Gardens, Kabuki Theater' },
+        { day: 'Day 3', activities: 'Day trip to Kamakura, Evening at Izakaya' }
+      ],
+      'adventure': [
+        { day: 'Day 1', activities: 'Tokyo Skytree, Mario Kart City Tour, Robot Restaurant' },
+        { day: 'Day 2', activities: 'Mt. Fuji day trip, Hot springs experience' },
+        { day: 'Day 3', activities: 'Teamlab Borderless Digital Art Museum, Tokyo Joypolis, Shibuya Crossing' }
+      ],
+      'food': [
+        { day: 'Day 1', activities: 'Tsukiji Outer Market, Sushi making class, Ramen tour' },
+        { day: 'Day 2', activities: 'Depachika food hall exploration, Washoku cooking class, Izakaya hopping' },
+        { day: 'Day 3', activities: 'Street food tour, Sake tasting, Kaiseki dinner experience' }
+      ]
+    },
+    'new-york': {
+      'cultural': [
+        { day: 'Day 1', activities: 'Metropolitan Museum of Art, Broadway Show, Times Square' },
+        { day: 'Day 2', activities: 'Museum of Modern Art, Greenwich Village tour, Jazz club evening' },
+        { day: 'Day 3', activities: 'Ellis Island and Statue of Liberty, 9/11 Memorial, Brooklyn Bridge walk' }
+      ],
+      'shopping': [
+        { day: 'Day 1', activities: 'Fifth Avenue luxury shops, SoHo boutiques' },
+        { day: 'Day 2', activities: 'Chelsea Market, Macys Herald Square, Brooklyn Flea Market' },
+        { day: 'Day 3', activities: 'Century 21, Designer outlets, Vintage shops in East Village' }
+      ],
+      'food': [
+        { day: 'Day 1', activities: 'Food tour in Little Italy and Chinatown, Dinner in trendy restaurant in SoHo' },
+        { day: 'Day 2', activities: 'Bagel making class, Food cart lunch at Central Park, Famous pizza tour' },
+        { day: 'Day 3', activities: 'Brooklyn food scene exploration, Rooftop bar experience, Dinner cruise' }
+      ]
+    },
+    'rome': {
+      'cultural': [
+        { day: 'Day 1', activities: 'Colosseum, Roman Forum, Palatine Hill' },
+        { day: 'Day 2', activities: 'Vatican Museums, St. Peter\'s Basilica, Evening at Trastevere' },
+        { day: 'Day 3', activities: 'Pantheon, Trevi Fountain, Spanish Steps, Villa Borghese' }
+      ],
+      'food': [
+        { day: 'Day 1', activities: 'Traditional pasta making class, Wine tasting, Dinner at local trattoria' },
+        { day: 'Day 2', activities: 'Campo de\' Fiori market tour, Gelato tasting, Dinner in Jewish Quarter' },
+        { day: 'Day 3', activities: 'Street food tour, Pizza making class, Dinner with opera performance' }
+      ]
+    },
+    'bali': {
+      'relaxation': [
+        { day: 'Day 1', activities: 'Arrival and spa treatment, Sunset at Uluwatu Temple' },
+        { day: 'Day 2', activities: 'Beach day at Nusa Dua, Traditional Balinese massage' },
+        { day: 'Day 3', activities: 'Yoga retreat in Ubud, Natural hot springs, Dinner overlooking rice terraces' }
+      ],
+      'adventure': [
+        { day: 'Day 1', activities: 'Sunrise hike at Mt. Batur, Visit coffee plantation' },
+        { day: 'Day 2', activities: 'White water rafting, Sacred Monkey Forest Sanctuary' },
+        { day: 'Day 3', activities: 'Snorkeling trip to Menjangan Island, Sunset at Tanah Lot Temple' }
+      ]
+    },
+    'barcelona': {
+      'cultural': [
+        { day: 'Day 1', activities: 'Sagrada Familia, Park Güell, Gothic Quarter' },
+        { day: 'Day 2', activities: 'Casa Batlló, Casa Milà, Picasso Museum' },
+        { day: 'Day 3', activities: 'Montjuïc Hill, Poble Espanyol, Evening tapas tour' }
+      ],
+      'food': [
+        { day: 'Day 1', activities: 'La Boqueria Market tour, Paella cooking class, Wine tasting' },
+        { day: 'Day 2', activities: 'Chocolate and pastry tour, Tapas hopping, Flamenco show with dinner' },
+        { day: 'Day 3', activities: 'Seafood tour at Barceloneta, Cava tasting, Farewell dinner with views' }
+      ]
+    }
+  };
+}
+
+function saveTripToDatabase() {
+  const destination = document.getElementById('destination');
+  const dates = document.getElementById('dates');
+  const travelers = document.getElementById('travelers');
+  const budget = document.getElementById('budget');
+  const interests = document.getElementById('interests');
+  
+  if (!destination.value || !dates.value) {
+    alert('Please complete all required fields before saving.');
+    return;
+  }
+  
+  setTimeout(() => {
+    alert('Your trip has been saved successfully! You can view it in your profile.');
+  }, 500);
+}
+
+function initializeFestivalSlider() {
+  const track = document.getElementById('festivals-track');
+  const prevButton = document.getElementById('prev-festival');
+  const nextButton = document.getElementById('next-festival');
+  const currentSlideEl = document.querySelector('.current-slide');
+  const totalSlidesEl = document.querySelector('.total-slides');
+  
+  if (!track || !prevButton || !nextButton) return;
+  
+  let currentSlide = 0;
+  const slides = document.querySelectorAll('.festival-item');
+  const slideCount = slides.length;
+  
+  if (slideCount <= 0) return;
+  
+  totalSlidesEl.textContent = slideCount;
+  
+  // Update slider display
+  function updateSlider() {
+    track.style.transform = `translateX(-${currentSlide * 100}%)`;
+    currentSlideEl.textContent = currentSlide + 1;
+  }
+  
+  // Add event listeners to control buttons
+  prevButton.addEventListener('click', function() {
+    currentSlide = (currentSlide - 1 + slideCount) % slideCount;
+    updateSlider();
+  });
+  
+  nextButton.addEventListener('click', function() {
+    currentSlide = (currentSlide + 1) % slideCount;
+    updateSlider();
+  });
+  
+  // Auto-rotate slider every 5 seconds
+  let autoSlideInterval = setInterval(() => {
+    currentSlide = (currentSlide + 1) % slideCount;
+    updateSlider();
+  }, 5000);
+  
+  // Pause auto rotation when hovering
+  track.addEventListener('mouseenter', function() {
+    clearInterval(autoSlideInterval);
+  });
+  
+  track.addEventListener('mouseleave', function() {
+    autoSlideInterval = setInterval(() => {
+      currentSlide = (currentSlide + 1) % slideCount;
+      updateSlider();
+    }, 5000);
+  });
+  
+  // Initialize slider
+  updateSlider();
+}
+
+function initializeDestinationFilters() {
+  const categoryButtons = document.querySelectorAll('.category-button');
+  const destinationItems = document.querySelectorAll('.destination-item');
+  
+  categoryButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      // Remove active class from all buttons
+      categoryButtons.forEach(btn => btn.classList.remove('active'));
+      // Add active class to clicked button
+      this.classList.add('active');
+      
+      const category = this.getAttribute('data-category');
+      
+      // Filter destinations
+      destinationItems.forEach(item => {
+        if (category === 'all' || item.getAttribute('data-category') === category) {
+          item.style.display = 'block';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    });
+  });
+}
+
+function showDestinationDetails(destination) {
+  const destinationInfo = {
+    'Paris': {
+      description: 'The City of Light awaits with its iconic architecture, world-class cuisine, and romantic ambiance.',
+      attractions: 'Eiffel Tower, Louvre Museum, Notre-Dame Cathedral, Montmartre, Champs-Élysées',
+      bestTimeToVisit: 'April to June or October to early November'
+    },
+    'Tokyo': {
+      description: 'A city where tradition meets futuristic innovation, offering unique cultural experiences.',
+      attractions: 'Meiji Shrine, Tokyo Skytree, Shibuya Crossing, Senso-ji Temple, Imperial Palace',
+      bestTimeToVisit: 'March to April for cherry blossoms or October to November for autumn colors'
+    },
+    'New York': {
+      description: 'The Big Apple offers world-famous landmarks, diverse neighborhoods, and endless entertainment options.',
+      attractions: 'Statue of Liberty, Central Park, Empire State Building, Broadway, Times Square',
+      bestTimeToVisit: 'April to June or September to early November'
+    },
+    'Rome': {
+      description: 'The Eternal City with ancient history, amazing food, and beautiful architecture.',
+      attractions: 'Colosseum, Roman Forum, Vatican City, Trevi Fountain, Spanish Steps',
+      bestTimeToVisit: 'April to June or September to October'
+    },
+    'Bangkok': {
+      description: 'Thailand\'s vibrant capital with ornate shrines, bustling markets, and amazing street food.',
+      attractions: 'Grand Palace, Wat Arun, Chatuchak Market, Khao San Road, Chao Phraya River',
+      bestTimeToVisit: 'November to February when it\'s cooler and drier'
+    },
+    'Cape Town': {
+      description: 'A stunning coastal city with dramatic scenery, diverse culture, and incredible wildlife.',
+      attractions: 'Table Mountain, Cape of Good Hope, Robben Island, V&A Waterfront, Boulders Beach',
+      bestTimeToVisit: 'September to November for spring or February to April for autumn'
+    }
+  };
+  
+  const info = destinationInfo[destination] || {
+    description: 'Discover the beauty and culture of this amazing destination.',
+    attractions: 'Various landmarks and cultural sites',
+    bestTimeToVisit: 'Year-round, depending on your preferences'
+  };
+  
+  alert(`${destination}\n\n${info.description}\n\nTop Attractions: ${info.attractions}\n\nBest Time to Visit: ${info.bestTimeToVisit}`);
+}
+
+function showFestivalDetails(festival) {
+  const festivalInfo = {
+    'Diwali': 'Diwali is a 5-day festival celebrated by millions around the world. It includes lighting oil lamps, exchanging gifts, and enjoying firework displays.',
+    'Christmas': 'Christmas in London features magical decorations at Oxford Street, Winter Wonderland in Hyde Park, and wonderful Christmas markets throughout the city.',
+    'New Years Eve': 'New Year\'s Eve in NYC is famous for its iconic ball drop in Times Square, attended by a million people with billions more watching worldwide.',
+    'Carnival': 'Rio Carnival is the biggest carnival in the world featuring spectacular parades, costumes, and samba dancing competitions at the Sambadrome.',
+    'Oktoberfest': 'Oktoberfest in Munich is a 16-18 day folk festival with beer halls, traditional food, music, and amusement rides, attracting over 6 million visitors.'
+  };
+  
+  const info = festivalInfo[festival.replace(/\s/g, '')] || 
+    'A colorful celebration of culture, traditions and festivities. Contact our travel advisors for special festival packages!';
+  
+  alert(`${festival}\n\n${info}\n\nInterested in experiencing this festival? Contact our travel advisors for special festival packages!`);
+}
+
+function redirectToDestination(destination) {
+  window.location.href = `destination.html?name=${encodeURIComponent(destination)}&date=${encodeURIComponent('2025-03-08')}&user=${encodeURIComponent('donlj')}`;
+}
+
+
+function redirectToBooking(name, description, price) {
+  const queryParams = new URLSearchParams({
+    package: name,
+    description: description,
+    price: price,
+    date: '2025-03-08 13:39:04',
+    user: 'donlj'
+  });
+  window.location.href = `booking.html?${queryParams.toString()}`;
+}
+
+function initializeSearchFunction() {
+  const searchInput = document.getElementById('searchInput');
+  const searchButton = document.querySelector('.search-button');
+  
+  if (!searchInput || !searchButton) return;
+  
+  function performSearch() {
+    const searchQuery = searchInput.value.toLowerCase().trim();
+    if (!searchQuery) return;
+    
+    const sections = ['#destinations', '#packages', '#festivals'];
+    let matchFound = false;
+    
+    sections.forEach(section => {
+      const sectionEl = document.querySelector(section);
+      if (!sectionEl) return;
+      
+      const cards = sectionEl.querySelectorAll('.card, .destination-card, .festival-card');
+      cards.forEach(card => {
+        const cardText = card.textContent.toLowerCase();
+        const matches = cardText.includes(searchQuery);
+        
+        // Get the parent element that should be hidden (could be a festival-item or the card itself)
+        const elementToToggle = card.closest('.festival-item') || card.closest('.destination-item') || card;
+        
+        if (matches) {
+          elementToToggle.style.display = 'block';
+          matchFound = true;
+          elementToToggle.classList.add('highlight');
+          setTimeout(() => elementToToggle.classList.remove('highlight'), 1500);
+        } else {
+          elementToToggle.style.display = 'none';
+        }
+      });
+    });
+    
+    if (!matchFound) {
+      alert(`No results found for "${searchQuery}". Please try a different search term.`);
+    }
+  }
+  
+  searchButton.addEventListener('click', performSearch);
+  searchInput.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+      performSearch();
+    }
+  });
+}
+
+function addWeatherToDestinations() {
+  const destinationCards = document.querySelectorAll('.card');
+  
+  destinationCards.forEach(card => {
+    const placeNameEl = card.querySelector('.place-name');
+    if (!placeNameEl) return;
+    
+    const cityName = placeNameEl.textContent;
+    
+    // For demo purposes, use static data
+    const weatherData = {
+      'Paris': { temp: 12, condition: 'Partly Cloudy' },
+      'Tokyo': { temp: 18, condition: 'Sunny' },
+      'New York': { temp: 8, condition: 'Rainy' },
+      'Rome': { temp: 16, condition: 'Clear' },
+      'Bangkok': { temp: 32, condition: 'Hot' },
+      'Barcelona': { temp: 19, condition: 'Sunny' },
+      'Cape Town': { temp: 23, condition: 'Windy' }
+    };
+    
+    const data = weatherData[cityName] || { temp: '--', condition: 'Unknown' };
+    
+    // If weather info already exists, skip
+    if (card.querySelector('.weather-info')) return;
+    
+    // Create and append weather div
+    const weatherDiv = document.createElement('div');
+    weatherDiv.className = 'weather-info';
+    weatherDiv.innerHTML = `
+      <p><i class="fas fa-temperature-high"></i> ${data.temp}°C</p>
+      <p><i class="fas fa-cloud"></i> ${data.condition}</p>
+    `;
+    card.appendChild(weatherDiv);
+  });
+}
+
+function initializeNewsletterSubscription() {
+  const subscribeButton = document.getElementById('subscribe-button');
+  if (!subscribeButton) return;
+  
+  subscribeButton.addEventListener('click', function() {
+    const email = document.getElementById('newsletter-email');
+    
+    if (!email || !email.value) {
+      alert('Please enter your email address');
+      return;
+    }
+    
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email.value)) {
+      alert('Please enter a valid email address');
+      return;
+    }
+    
+    // For demo purposes, just show success message
+    alert(`Thank you for subscribing to our newsletter with ${email.value}! You'll start receiving our travel updates soon.`);
+    email.value = '';
+  });
+}
+
+function initializeScrollToTop() {
+  const scrollBtn = document.querySelector('.scroll-to-top');
+  if (!scrollBtn) return;
+  
+  window.addEventListener('scroll', function() {
+    if (window.pageYOffset > 300) {
+      scrollBtn.classList.add('show');
+    } else {
+      scrollBtn.classList.remove('show');
+    }
+  });
+  
+  scrollBtn.addEventListener('click', function() {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  });
+}
+
+// Call initialization function for newsletter
+document.addEventListener('DOMContentLoaded', function() {
+  initializeNewsletterSubscription();
+});
+</script>
+</body>
+</html>
