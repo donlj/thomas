@@ -1,0 +1,2523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Explore breathtaking travel destinations with Wanderly. Find your perfect journey today.">
+    <meta name="keywords" content="travel, tourism, destinations, vacations, Wanderly">
+
+    <title>Destinations | Wanderly</title>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #1E88E5;
+            --primary-dark: #1565C0;
+            --accent-color: #FFC107;
+            --text-dark: #333333;
+            --text-light: #FFFFFF;
+            --background-light: #F8F9FA;
+            --gray-light: #E9ECEF;
+            --gray-medium: #ADB5BD;
+            --gray-dark: #495057;
+            --success-color: #28a745;
+            --danger-color: #dc3545;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: #f8f9fa;
+            overflow-x: hidden;
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, #040a10, #6794c5);
+            color: white;
+            padding: 20px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            margin-right: 20px;
+            text-transform: uppercase;
+            background: linear-gradient(90deg, #FFF, #a3c6e9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        nav {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            padding: 10px 18px;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        nav a.active {
+            background: #18658f;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        nav a:hover {
+            background: #18658f;
+            transform: scale(1.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            text-align: center;
+            color: #fff;
+            height: 80vh;
+            overflow: hidden;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(0deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.2) 100%);
+            z-index: 1;
+        }
+
+        .hero img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(80%);
+            object-position: center 30%;
+        }
+
+        .hero-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 1200px;
+            z-index: 2;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -40%);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            text-shadow: 2px 2px 15px rgba(0,0,0,0.7);
+        }
+
+        /* Search and Filter Form */
+        .search-filter {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 20px;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            max-width: 900px;
+            margin: 0 auto;
+            animation: fadeIn 1s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .search-container {
+            position: relative;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 18px;
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 15px 45px;
+            border-radius: 30px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .search-bar::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .search-bar:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(30, 136, 229, 0.3);
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .clear-search {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            color: rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.7;
+        }
+
+        .clear-search:hover {
+            opacity: 1;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .filters-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .filter-group label {
+            font-size: 14px;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.9);
+            margin-left: 10px;
+        }
+
+        .filter {
+            padding: 12px 15px;
+            border-radius: 20px;
+            border: none;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .filter:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(30, 136, 229, 0.3);
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .filter option {
+            background: #333;
+            color: white;
+        }
+
+        .price-slider-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .price-slider {
+            flex: 1;
+            -webkit-appearance: none;
+            height: 6px;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.3);
+            outline: none;
+            margin: 0 10px;
+        }
+
+        .price-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            cursor: pointer;
+            border: 3px solid white;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        }
+
+        #price-min, #price-max {
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+            min-width: 60px;
+        }
+
+        .search-button {
+            background: linear-gradient(90deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            padding: 15px 35px;
+            border: none;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+            box-shadow: 0 5px 15px rgba(21, 101, 192, 0.3);
+            align-self: center;
+        }
+
+        .search-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(21, 101, 192, 0.5);
+            background: linear-gradient(90deg, #1976D2, #0D47A1);
+        }
+
+        .reset-button {
+            background: transparent;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            align-self: center;
+        }
+
+        .reset-button:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Page Title Section */
+        .page-title {
+            text-align: center;
+            padding: 30px;
+            background: linear-gradient(90deg, #5e93cf, #3a7cc7);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-title h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin: 0;
+            position: relative;
+            z-index: 1;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .page-title::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                transparent 0%,
+                rgba(255, 255, 255, 0.1) 100%
+            );
+            transform: rotate(45deg);
+            animation: shimmer 3s linear infinite;
+        }
+
+        @keyframes shimmer {
+            from { transform: rotate(45deg) translateX(-150%); }
+            to { transform: rotate(45deg) translateX(150%); }
+        }
+
+        .results-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .results-count {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--gray-dark);
+        }
+
+        .sort-options {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sort-label {
+            font-size: 14px;
+            color: var(--gray-dark);
+        }
+
+        .sort-select {
+            padding: 8px 15px;
+            border-radius: 20px;
+            border: 1px solid var(--gray-medium);
+            background: white;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        /* Tours Grid */
+        .tours {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            padding: 40px;
+            background: var(--background-light);
+        }
+
+        .tour-card {
+            border-radius: 16px;
+            overflow: hidden;
+            background: #fff;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            cursor: pointer;
+        }
+
+        .tour-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.8) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .tour-card:hover::before {
+            opacity: 0.2;
+        }
+
+        .tour-card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .tour-card:hover img {
+            transform: scale(1.05);
+        }
+
+        .card-content {
+            padding: 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .tour-card h3 {
+            font-size: 20px;
+            margin: 0 0 10px;
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        .tour-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 15px 25px rgba(0,0,0,0.2);
+        }
+
+        .card-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            color: var(--gray-dark);
+            font-size: 14px;
+        }
+
+        .card-info span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .card-rating {
+            margin: 10px 0;
+            color: #FFC107;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .card-rating span {
+            color: var(--gray-dark);
+            font-size: 14px;
+            margin-left: 5px;
+        }
+
+        .price-tag {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(90deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            z-index: 2;
+            font-size: 14px;
+        }
+
+        .region-badge {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(0,0,0,0.6);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            z-index: 2;
+        }
+
+        .view-details-btn {
+            background: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+            padding: 8px 0;
+            width: 100%;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .view-details-btn:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        /* Empty Results State */
+        .empty-results {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 50px 20px;
+            grid-column: 1/-1;
+            text-align: center;
+        }
+
+        .empty-results i {
+            font-size: 60px;
+            color: var(--gray-medium);
+            margin-bottom: 20px;
+        }
+
+        .empty-results h3 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--gray-dark);
+        }
+
+        .empty-results p {
+            color: var(--gray-dark);
+            margin-bottom: 20px;
+            max-width: 500px;
+        }
+
+        .try-again-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 16px;
+        }
+
+        .try-again-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .modal-content {
+            background: #fff;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            max-width: 800px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            animation: modalPopIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            position: relative;
+        }
+
+        @keyframes modalPopIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .modal-content h2 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--text-dark);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: transparent;
+            color: var(--danger-color);
+            border: 2px solid var(--danger-color);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 16px;
+        }
+
+        .close-btn:hover {
+            background: var(--danger-color);
+            color: white;
+        }
+
+        .modal-tabs {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--gray-light);
+        }
+
+        .tab-btn {
+            padding: 10px 20px;
+            background: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: var(--gray-dark);
+        }
+
+        .tab-btn.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+
+        .tab-content {
+            position: relative;
+        }
+
+        .tab-pane {
+            display: none;
+        }
+
+        .tab-pane.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .modal-details {
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .modal-details p {
+            font-size: 16px;
+            color: var(--gray-dark);
+            margin-bottom: 15px;
+        }
+
+        .modal-details img, .tab-pane img {
+            width: 100%;
+            border-radius: 16px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin: 20px 0;
+        }
+
+        .trip-highlights {
+            background: var(--gray-light);
+            border-radius: 16px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .trip-highlights h3 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: var(--text-dark);
+        }
+
+        .trip-highlights ul {
+            padding-left: 20px;
+        }
+
+        .trip-highlights li {
+            margin-bottom: 10px;
+            color: var(--gray-dark);
+        }
+
+        .modal-gallery {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .modal-gallery img {
+            border-radius: 10px;
+            height: 120px;
+            object-fit: cover;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .modal-gallery img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .booking-section {
+            background: var(--background-light);
+            border-radius: 16px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+
+        .booking-section h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: var(--text-dark);
+        }
+
+        .price-display {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .price-display #modal-price {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .price-display span:last-child {
+            color: var(--gray-dark);
+            font-size: 14px;
+        }
+
+        .booking-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .date-selector, .traveler-count {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .date-selector label, .traveler-count label {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--gray-dark);
+        }
+
+        .date-selector input {
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid var(--gray-medium);
+            font-size: 16px;
+        }
+
+        .counter {
+            display: flex;
+            align-items: center;
+            border: 1px solid var(--gray-medium);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .counter button {
+            width: 40px;
+            height: 40px;
+            background: var(--background-light);
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .counter button:hover {
+            background: var(--gray-light);
+        }
+
+        .counter span {
+            flex: 1;
+            text-align: center;
+            font-size: 16px;
+            font-weight: 600;
+            padding: 10px 0;
+        }
+
+        .book-now-btn {
+            background: linear-gradient(90deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: block;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(21, 101, 192, 0.3);
+        }
+
+        .book-now-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(21, 101, 192, 0.5);
+            background: linear-gradient(90deg, #1976D2, #0D47A1);
+        }
+
+        /* Itinerary Tab */
+        .itinerary-day {
+            margin-bottom: 25px;
+            border-left: 3px solid var(--primary-color);
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .itinerary-day::before {
+            content: '';
+            position: absolute;
+            left: -11px;
+            top: 0;
+            width: 20px;
+            height: 20px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 0 0 3px var(--primary-color);
+        }
+
+        .itinerary-day h4 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: var(--text-dark);
+        }
+
+        .itinerary-day p {
+            color: var(--gray-dark);
+        }
+
+        /* Reviews Tab */
+        .review-item {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: var(--background-light);
+            border-radius: 10px;
+        }
+
+        .reviewer-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .reviewer-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--gray-medium);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: white;
+        }
+
+        .reviewer-details {
+            flex: 1;
+        }
+
+        .reviewer-name {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .review-date {
+            font-size: 12px;
+            color: var(--gray-dark);
+        }
+
+        .review-stars {
+            color: var(--accent-color);
+            margin: 5px 0;
+        }
+
+        .review-text {
+            color: var(--gray-dark);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .footer-content {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-logo {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+
+        footer a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        footer a:hover {
+            color: var(--primary-color);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+        }
+
+        .social-links a:hover {
+            background: var(--primary-color);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            margin-top: 20px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 14px;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0) 50%, rgba(0,0,0,0.2) 100%);
+        }
+
+        /* Back to top button */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+            opacity: 0;
+            visibility: hidden;
+            z-index: 999;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            background: var(--primary-dark);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .hero-content h1 {
+                font-size: 2.8rem;
+            }
+
+            .filters-container {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .tours {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                padding: 15px;
+                gap: 10px;
+            }
+
+            .logo {
+                margin-right: 0;
+            }
+
+            nav {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            nav a {
+                padding: 8px 12px;
+                font-size: 14px;
+            }
+
+            .hero-content h1 {
+                font-size: 2.2rem;
+            }
+
+            .search-filter {
+                padding: 20px 15px;
+            }
+
+            .search-bar {
+                padding: 12px 40px;
+            }
+
+            .filters-container {
+                grid-template-columns: 1fr;
+            }
+
+            .booking-options {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-gallery {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .modal-tabs {
+                overflow-x: auto;
+                white-space: nowrap;
+                padding-bottom: 5px;
+            }
+            
+            .footer-links {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero-content h1 {
+                font-size: 1.8rem;
+            }
+
+            .page-title h1 {
+                font-size: 2rem;
+            }
+
+            .search-button {
+                font-size: 14px;
+                padding: 12px 25px;
+            }
+
+            .tours {
+                gap: 20px;
+                padding: 15px;
+            }
+
+            .tour-card h3 {
+                font-size: 18px;
+            }
+
+            .modal-content {
+                padding: 20px 15px;
+                width: 95%;
+            }
+        }
+        /* Dropdown menu styling */
+.user-info {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-left: 15px;
+}
+
+.user-dropdown {
+    position: relative;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: white;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    min-width: 200px;
+    z-index: 1000;
+    margin-top: 10px;
+}
+
+.dropdown-menu.active {
+    display: block;
+}
+
+.dropdown-menu a {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    color: #333;
+    text-decoration: none;
+    font-size: 14px;
+    transition: background-color 0.2s;
+}
+
+.dropdown-menu a i {
+    margin-right: 10px;
+    width: 18px;
+    text-align: center;
+}
+
+.dropdown-menu a:hover {
+    background-color: #f5f5f5;
+}
+
+.dropdown-divider {
+    height: 1px;
+    background-color: #eee;
+    margin: 8px 0;
+}
+
+/* User icon styling */
+.user-icon {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 8px 15px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.user-icon:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.user-icon i.fa-user-circle {
+    margin-right: 8px;
+}
+
+.user-icon i.fa-chevron-down {
+    margin-left: 8px;
+    font-size: 12px;
+    transition: transform 0.3s;
+}
+
+.dropdown-menu.active + .user-icon .fa-chevron-down {
+    transform: rotate(180deg);
+}
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">Wanderly</div>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="#" class="active">Destinations</a>
+            <a href="packages.html">Packages</a>
+            <a href="login.html">Login</a>
+        </nav>
+        <div class="user-info">
+            <div class="user-dropdown">
+              <div class="user-icon">
+                <i class="fas fa-user-circle"></i>
+                <span id="currentUser">Parvanendu</span>
+                <i class="fas fa-chevron-down"></i>
+              </div>
+              <div class="dropdown-menu">
+                <a href="profile.html"><i class="fas fa-user"></i> My Profile</a>
+                <a href="bookings.html"><i class="fas fa-list"></i> My Bookings</a>
+                <a href="settings.html"><i class="fas fa-cog"></i> Account Settings</a>
+                <div class="dropdown-divider"></div>
+                <a href="#" id="logoutButton"><i class="fas fa-sign-out-alt"></i> Logout</a>
+              </div>
+            </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <img src="https://mapmygenome.in/cdn/shop/articles/How_to_Stay_Healthy_While_Traveling_-_Tips_and_Insights_for_a_Safe_Journey.webp?v=1718688910" alt="Traveling across beautiful landscapes">
+            <div class="hero-content">
+                <h1>Find Your Special Voyage Today</h1>
+                <form class="search-filter" onsubmit="filterDestinations(event)">
+                    <div class="search-container">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" id="search-bar" class="search-bar" placeholder="Search destinations...">
+                        <button type="button" class="clear-search" id="clear-search"><i class="fas fa-times"></i></button>
+                    </div>
+                    <div class="filters-container">
+                        <div class="filter-group">
+                            <label for="type-filter">Type</label>
+                            <select id="type-filter" class="filter">
+                                <option value="">All Types</option>
+                                <option value="beach">Beach</option>
+                                <option value="mountain">Mountain</option>
+                                <option value="city">City</option>
+                                <option value="adventure">Adventure</option>
+                                <option value="cultural">Cultural</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="region-filter">Region</label>
+                            <select id="region-filter" class="filter">
+                                <option value="">All Regions</option>
+                                <option value="asia">Asia</option>
+                                <option value="europe">Europe</option>
+                                <option value="america">America</option>
+                                <option value="africa">Africa</option>
+                                <option value="oceania">Oceania</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="season-filter">Season</label>
+                            <select id="season-filter" class="filter">
+                                <option value="">Any Season</option>
+                                <option value="spring">Spring</option>
+                                <option value="summer">Summer</option>
+                                <option value="autumn">Autumn</option>
+                                <option value="winter">Winter</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="price-range">Price Range</label>
+                            <div class="price-slider-container">
+                                <span id="price-min">$0</span>
+                                <input type="range" min="0" max="5000" value="5000" class="price-slider" id="price-range">
+                                <span id="price-max">$5000</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="search-button">
+                        <span>Find Destinations</span>
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                    <button type="button" id="reset-filters" class="reset-button">Reset Filters</button>
+                </form>            
+            </div>
+        </section>
+        
+        <section class="page-title">
+            <h1>DESTINATIONS</h1>
+        </section>
+
+        <div class="results-info">
+            <div class="results-count" id="results-count">Showing all destinations</div>
+            <div class="sort-options">
+                <span class="sort-label">Sort by:</span>
+                <select class="sort-select" id="sort-select" onchange="sortDestinations(this.value)">
+                    <option value="recommended">Recommended</option>
+                    <option value="price-low">Price: Low to High</option>
+                    <option value="price-high">Price: High to Low</option>
+                    <option value="duration">Duration</option>
+                </select>
+            </div>
+        </div>
+
+        <section class="tours" id="destinations-grid">
+            <div class="tour-card" data-name="kanab" data-type="mountain" data-region="america" data-season="summer" data-price="2000" onclick="openModal('kanab')">
+                <div class="region-badge">America</div>
+                <div class="price-tag">$2,000</div>
+                <img src="https://assets.explore-share.com/trips/164924/cover/1647319932-the_wave_2009_36253312106.jpg" alt="The Wave Trail, Kanab">
+                <div class="card-content">
+                    <h3>The Wave Trail, Kanab</h3>
+                    <div class="card-info">
+                        <span><i class="fas fa-calendar"></i> 4 days</span>
+                        <span><i class="fas fa-sun"></i> Summer</span>
+                    </div>
+                    <div class="card-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        <span>(18 reviews)</span>
+                    </div>
+                    <button class="view-details-btn">View Details</button>
+                </div>
+            </div>
+
+            <div class="tour-card" data-name="maldives" data-type="beach" data-region="asia" data-season="winter" data-price="800" onclick="openModal('maldives')">
+                <div class="region-badge">Asia</div>
+                <div class="price-tag">$800</div>
+                <img src="https://entiretravel.imgix.net/getmedia/778914be-69fe-41e1-9928-746833ce741c/Cover-Image-Best-Beaches-in-Maldives.jpeg?auto=format" alt="Maldives beaches">
+                <div class="card-content">
+                    <h3>Maldives</h3>
+                    <div class="card-info">
+                        <span><i class="fas fa-calendar"></i> 4 days</span>
+                        <span><i class="fas fa-snowflake"></i> Winter</span>
+                    </div>
+                    <div class="card-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <span>(32 reviews)</span>
+                    </div>
+                    <button class="view-details-btn">View Details</button>
+                </div>
+            </div>
+
+            <div class="tour-card" data-name="paris" data-type="city" data-region="europe" data-season="spring" data-price="1500" onclick="openModal('paris')">
+                <div class="region-badge">Europe</div>
+                <div class="price-tag">$1,500</div>
+                <img src="https://static.independent.co.uk/2024/08/30/14/newFile-3.jpg" alt="Paris, France">
+                <div class="card-content">
+                    <h3>Paris, France</h3>
+                    <div class="card-info">
+                        <span><i class="fas fa-calendar"></i> 5 days</span>
+                        <span><i class="fas fa-leaf"></i> Spring</span>
+                    </div>
+                    <div class="card-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <span>(27 reviews)</span>
+                    </div>
+                    <button class="view-details-btn">View Details</button>
+                </div>
+            </div>
+
+            <div class="tour-card" data-name="bangkok" data-type="city" data-region="asia" data-season="summer" data-price="1800" onclick="openModal('bangkok')">
+                <div class="region-badge">Asia</div>
+                <div class="price-tag">$1,800</div>
+                <img src="https://res-1.cloudinary.com/gorealtravel/image/upload/v1563889832/production/marketing/city/5d3181c870428e0008e0845c/city_main_image/BANGKOK.jpg" alt="Bangkok, Thailand">
+                <div class="card-content">
+                    <h3>Bangkok, Thailand</h3>
+                    <div class="card-info">
+                        <span><i class="fas fa-calendar"></i> 6 days</span>
+                        <span><i class="fas fa-sun"></i> Summer</span>
+                    </div>
+                    <div class="card-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        <span>(24 reviews)</span>
+                    </div>
+                    <button class="view-details-btn">View Details</button>
+                </div>
+            </div>
+
+            <!-- New Destination Cards -->
+            <div class="tour-card" data-name="santorini" data-type="beach" data-region="europe" data-season="summer" data-price="2100" onclick="openModal('santorini')">
+                <div class="region-badge">Europe</div>
+                <div class="price-tag">$2,100</div>
+                <img src="https://i.natgeofe.com/n/f8b99a77-d194-4b0c-9b6e-583fcce7fdff/santorini-greece_3x2.jpg" alt="Santorini, Greece">
+                <div class="card-content">
+                    <h3>Santorini, Greece</h3>
+                    <div class="card-info">
+                        <span><i class="fas fa-calendar"></i> 5 days</span>
+                        <span><i class="fas fa-sun"></i> Summer</span>
+                    </div>
+                    <div class="card-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <span>(41 reviews)</span>
+                    </div>
+                    <button class="view-details-btn">View Details</button>
+                </div>
+            </div>
+
+            <div class="tour-card" data-name="cusco" data-type="adventure" data-region="america" data-season="autumn" data-price="2400" onclick="openModal('cusco')">
+                <div class="region-badge">America</div>
+                <div class="price-tag">$2,400</div>
+                <img src="https://cdn.britannica.com/31/122031-050-F8458F25/Machu-Picchu.jpg" alt="Machu Picchu, Peru">
+                <div class="card-content">
+                    <h3>Cusco & Machu Picchu</h3>
+                    <div class="card-info">
+                        <span><i class="fas fa-calendar"></i> 7 days</span>
+                        <span><i class="fas fa-leaf"></i> Autumn</span>
+                    </div>
+                    <div class="card-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <span>(38 reviews)</span>
+                    </div>
+                    <button class="view-details-btn">View Details</button>
+                </div>
+            </div>
+
+            <!-- Empty Results State -->
+            <div class="empty-results" id="empty-results">
+                <i class="fas fa-search"></i>
+                <h3>No destinations found</h3>
+                <p>Try adjusting your filters or search for something else</p>
+                <button class="try-again-btn" onclick="resetFilters()">Reset Filters</button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal()"><i class="fas fa-times"></i></button>
+            <h2 id="modal-title">Destination</h2>
+            
+            <!-- Tabs Navigation -->
+            <div class="modal-tabs">
+                <button class="tab-btn active" data-tab="overview" onclick="switchTab('overview')">Overview</button>
+                <button class="tab-btn" data-tab="photos" onclick="switchTab('photos')">Photos</button>
+                <button class="tab-btn" data-tab="itinerary" onclick="switchTab('itinerary')">Itinerary</button>
+                <button class="tab-btn" data-tab="reviews" onclick="switchTab('reviews')">Reviews</button>
+            </div>
+            
+            <!-- Tab Content -->
+            <div class="tab-content">
+                <div id="overview" class="tab-pane active">
+                    <div id="modal-details" class="modal-details"></div>
+                    <div class="trip-highlights">
+                        <h3><i class="fas fa-star"></i> Trip Highlights</h3>
+                        <div id="highlights-content"></div>
+                    </div>
+                    <div class="booking-section">
+                        <h3>Book This Trip</h3>
+                        <div class="price-display">
+                            <span id="modal-price">$1,800</span>
+                            <span>per person</span>
+                        </div>
+                        <div class="booking-options">
+                            <div class="date-selector">
+                                <label>Select Date</label>
+                                <input type="date" id="trip-date" min="2025-03-07">
+                            </div>
+                            <div class="traveler-count">
+                                <label>Travelers</label>
+                                <div class="counter">
+                                    <button type="button" onclick="decreaseTravelers()">-</button>
+                                    <span id="traveler-count">2</span>
+                                    <button type="button" onclick="increaseTravelers()">+</button>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="book-now-btn" onclick="bookTrip()">Book Now</button>
+                    </div>
+                </div>
+                
+                <div id="photos" class="tab-pane">
+                    <h3>Photo Gallery</h3>
+                    <div id="modal-gallery" class="modal-gallery"></div>
+                </div>
+                
+                <div id="itinerary" class="tab-pane">
+                    <h3>Trip Itinerary</h3>
+                    <div id="itinerary-content"></div>
+                </div>
+                
+                <div id="reviews" class="tab-pane">
+                    <h3>Traveler Reviews</h3>
+                    <div id="reviews-content"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Back to top button -->
+    <div class="back-to-top" id="back-to-top" onclick="scrollToTop()">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">Wanderly</div>
+            <div class="footer-links">
+                <a href="#">About Us</a>
+                <a href="#">Destinations</a>
+                <a href="#">Travel Guides</a>
+                <a href="#">Blog</a>
+                <a href="#">Contact</a>
+                <a href="#">FAQs</a>
+            </div>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+                <a href="#"><i class="fab fa-pinterest"></i></a>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 Wanderly. All rights reserved.</p>
+                <p>
+                    <a href="#">Privacy Policy</a> | 
+                    <a href="#">Terms of Service</a> | 
+                    <a href="#">Cookie Policy</a>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+    // Initialize authentication
+    updateUserInfoDisplay();
+    
+    // Initialize destinations page specific components
+    console.log(`Page loaded by ${getCurrentUser()} at ${getCurrentDateTime()}`);
+    setupEventListeners();
+    checkBackToTopButton();
+    setDefaultDates();
+});
+
+function updateUserInfoDisplay() {
+    // Get elements
+    const loginLink = document.querySelector('nav a[href="login.html"]');
+    const userInfo = document.querySelector('.user-info');
+    const currentUser = document.getElementById('currentUser');
+    
+    // Check if user is logged in (currentUser has content)
+    const isLoggedIn = currentUser && currentUser.textContent.trim() !== '';
+    
+    // Toggle visibility based on login status
+    if (loginLink) {
+        loginLink.style.display = isLoggedIn ? 'none' : 'inline-block';
+    }
+    
+    if (userInfo) {
+        userInfo.style.display = isLoggedIn ? 'flex' : 'none';
+    }
+    
+    // Update username display if logged in
+    if (currentUser && isLoggedIn) {
+        currentUser.textContent = 'Parvanendu';
+    }
+    
+    // Update current date
+    const currentDateElement = document.getElementById('currentDate');
+    if (currentDateElement) {
+        currentDateElement.textContent = '2025-03-08';
+    }
+    
+    // Initialize user dropdown functionality
+    initializeUserDropdown();
+}
+
+function initializeUserDropdown() {
+    const userIcon = document.querySelector('.user-icon');
+    const dropdownMenu = document.querySelector('.dropdown-menu');
+    const logoutButton = document.getElementById('logoutButton');
+    
+    if (userIcon && dropdownMenu) {
+        userIcon.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('active');
+        });
+        
+        // Close dropdown when clicking elsewhere
+        document.addEventListener('click', function() {
+            dropdownMenu.classList.remove('active');
+        });
+    }
+    
+    if (logoutButton) {
+        logoutButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            if (confirm('Are you sure you want to logout?')) {
+                alert('You have been logged out successfully.');
+                window.location.href = 'login.html';
+            }
+        });
+    }
+}
+        // Destination data
+        const destinationData = {
+            kanab: {
+                title: 'The Wave Trail, Kanab',
+                price: '$2,000',
+                priceValue: 2000,
+                description: `
+                    <p>Experience the breathtaking natural wonder of the Wave Trail in Kanab, Utah. This extraordinary geological formation features stunning sandstone formations with swirling, undulating patterns that create a mesmerizing wave-like appearance.</p>
+                    <p>This exclusive tour takes you through the protected Coyote Buttes area of the Vermilion Cliffs National Monument, where permits are highly limited to preserve this fragile environment.</p>
+                `,
+                highlights: `
+                    <ul>
+                        <li><strong>Spectacular Sandstone Formations:</strong> Witness the unique Wave formation with its flowing lines and incredible colors.</li>
+                        <li><strong>Professional Photography Opportunities:</strong> Capture once-in-a-lifetime shots with perfect lighting guidance from our expert guides.</li>
+                        <li><strong>Exclusive Access:</strong> We handle all permits and provide expert navigation through this protected wilderness.</li>
+                        <li><strong>Comfortable Accommodations:</strong> Stay in premium lodging in nearby Kanab with authentic Southwestern charm.</li>
+                    </ul>
+                `,
+                gallery: [
+                    'https://assets.explore-share.com/trips/164924/cover/1647319932-the_wave_2009_36253312106.jpg',
+                    'https://mediaim.expedia.com/destination/1/686bf5e35f2cef2b7b27ea0ce2872434.jpg',
+                    'https://cdn.recreation.gov/public/2022/02/28/20/38/4251909_8f928340-f78d-46e7-a04e-ca610ab4176a_1440.jpg',
+                    'https://www.travelandleisure.com/thmb/txBj5q7ZL2SVUxFUXqvrfZPA6ZU=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/the-wave-arizona-north-coyote-buttes-1-WAVEUP0519-3948d06365334a3e8a541911edb793e5.jpg',
+                    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRU4LtplPVpR1uXRXxFuBHtnRPnrua9vCa5Bw&s',
+                    'https://www.firefallphotography.com/wp-content/uploads/2022/07/2022-Kanab-05-25-0157-take6.jpg'
+                ],
+                itinerary: [
+                    {
+                        day: 'Day 1: Arrival in Kanab',
+                        description: 'Arrive at the Las Vegas airport where our team will meet you for a scenic transfer to Kanab, Utah. Enjoy a welcome dinner and briefing about the adventure ahead.'
+                    },
+                    {
+                        day: 'Day 2: The Wave Trail Adventure',
+                        description: 'Early morning departure for the Wave Trail. Your expert guide will lead you on this 6-mile roundtrip hike through stunning desert landscapes to reach the iconic Wave formation. Enjoy a picnic lunch among the incredible sandstone formations and plenty of time for photography.'
+                    },
+                    {
+                        day: 'Day 3: Buckskin Gulch & White Pocket',
+                        description: 'Explore the nearby Buckskin Gulch, the longest and deepest slot canyon in the Southwest, followed by a visit to the otherworldly White Pocket area with its unique rock formations and swirling colors.'
+                    },
+                    {
+                        day: 'Day 4: Departure Day',
+                        description: 'After breakfast, enjoy a short morning hike to see ancient petroglyphs before your transfer back to Las Vegas for departure flights.'
+                    }
+                ],
+                reviews: [
+                    {
+                        name: 'Michael S.',
+                        avatar: 'MS',
+                        date: 'July 2024',
+                        rating: 5,
+                        comment: 'The Wave Trail exceeded all my expectations! Our guide was incredibly knowledgeable and the views were absolutely breathtaking. Worth every penny for this once-in-a-lifetime experience.'
+                    },
+                    {
+                        name: 'Jennifer L.',
+                        avatar: 'JL',
+                        date: 'September 2024',
+                        rating: 5,
+                        comment: 'As an avid photographer, this trip was a dream come true. The lighting tips from our guide helped me capture the most stunning photos. The accommodations were also fantastic!'
+                    },
+                    {
+                        name: 'David R.',
+                        avatar: 'DR',
+                        date: 'May 2024',
+                        rating: 4,
+                        comment: 'Beautiful hike and amazing scenery. The guide was excellent. The hike was a bit challenging in the heat but totally worth it. Would recommend bringing plenty of water.'
+                    }
+                ]
+            },
+            maldives: {
+                title: 'Maldives',
+                price: '$800',
+                priceValue: 800,
+                description: `
+                    <p>Discover paradise on earth with our exclusive Maldives getaway. Known for its crystal clear turquoise waters, pristine white sand beaches, and vibrant coral reefs, the Maldives offers an unparalleled tropical escape.</p>
+                    <p>Stay in luxury overwater bungalows with direct access to the ocean and enjoy world-class service, exquisite dining, and a variety of water activities in this idyllic island setting.</p>
+                `,
+                highlights: `
+                    <ul>
+                        <li><strong>Overwater Accommodations:</strong> Stay in stunning bungalows perched directly over the lagoon with glass floor sections for marine viewing.</li>
+                        <li><strong>World-Class Snorkeling & Diving:</strong> Experience some of the world's most vibrant coral reefs with professional diving instructors.</li>
+                        <li><strong>Sunset Dolphin Cruise:</strong> Witness playful dolphins against the backdrop of a breathtaking Maldivian sunset.</li>
+                        <li><strong>Spa & Wellness:</strong> Indulge in traditional Maldivian spa treatments with panoramic ocean views.</li>
+                    </ul>
+                `,
+                gallery: [
+                    'https://entiretravel.imgix.net/getmedia/778914be-69fe-41e1-9928-746833ce741c/Cover-Image-Best-Beaches-in-Maldives.jpeg?auto=format',
+                    'https://www.sotc.in/blog/wp-content/uploads/2023/09/Male-Island.jpg',
+                    'https://media.cntraveler.com/photos/5c751bbf04ba503eb0f7d400/master/w_2580%2Cc_limit/Kudadoo-Maldives_2019_027_Kudadoo_9-JETTY.jpg',
+                    'https://cdn.britannica.com/96/196396-050-13758FB8/Maldives-tropical-island-resort.jpg',
+                    'https://www.audleytravel.com/us/-/media/images/north-and-central-america-and-caribbean/maldives/670-390-letterbox/istock-1127675854-maldives-aerial.jpg',
+                    'https://www.sustainablefishing.org/media/lib/4.7.19-Maldives-Bungalows-152744868_4288x2848_1560x645__ResizeGalleryImage.jpg'
+                ],
+                itinerary: [
+                    {
+                        day: 'Day 1: Arrival in Paradise',
+                        description: 'Arrive at Male International Airport and take a scenic seaplane transfer to your luxury resort. Enjoy a welcome cocktail and sunset dinner on the beach.'
+                    },
+                    {
+                        day: 'Day 2: Marine Life Exploration',
+                        description: 'After breakfast, join our marine biologist for a guided snorkeling tour of the house reef. In the afternoon, enjoy a semi-submarine coral tour, followed by a barbecue dinner under the stars.'
+                    },
+                    {
+                        day: 'Day 3: Island Relaxation',
+                        description: 'Morning yoga session on the beach, followed by a couples spa treatment. Afternoon at leisure to enjoy water sports or simply relax. Evening sunset dolphin cruise with champagne.'
+                    },
+                    {
+                        day: 'Day 4: Farewell to Paradise',
+                        description: 'Final morning to enjoy the crystal waters before your departure. Optional underwater photography session available before your seaplane transfer back to Male for your departure flight.'
+                    }
+                ],
+                reviews: [
+                    {
+                        name: 'Sarah M.',
+                        avatar: 'SM',
+                        date: 'February 2025',
+                        rating: 5,
+                        comment: 'This was truly a slice of paradise! The overwater bungalow was magical and we saw so many fish right from our deck. The staff went above and beyond to make our honeymoon special.'
+                    },
+                    {
+                        name: 'Robert K.',
+                        avatar: 'RK',
+                        date: 'December 2024',
+                        rating: 5,
+                        comment: 'The Maldives exceeded all expectations. The water is even clearer than in the photos and the marine life is incredible. The sunset dolphin cruise was the highlight of our trip!'
+                    },
+                    {
+                        name: 'Lisa T.',
+                        avatar: 'LT',
+                        date: 'January 2025',
+                        rating: 4,
+                        comment: 'Beautiful resort and amazing service. The only reason I m not giving 5 stars is because of the rainy weather we had for one day, but the resort staff made up for it with complimentary spa treatments.'
+                    }
+                ]
+            },
+            paris: {
+                title: 'Paris, France',
+                price: '$1,500',
+                priceValue: 1500,
+                description: `
+                    <p>Immerse yourself in the romance, history, and charm of the City of Light. Paris offers a perfect blend of iconic landmarks, world-class art museums, exquisite cuisine, and enchanting street scenes.</p>
+                    <p>Our curated Parisian experience takes you beyond the tourist highlights to discover hidden gems, authentic neighborhoods, and the true spirit of this magnificent city.</p>
+                `,
+                highlights: `
+                    <ul>
+                        <li><strong>Skip-the-Line Access:</strong> Enjoy priority access to the Eiffel Tower, Louvre Museum, and other major attractions.</li>
+                        <li><strong>Culinary Experiences:</strong> Private pastry class with a Parisian chef and guided food tour through historic neighborhoods.</li>
+                        <li><strong>Seine River Cruise:</strong> Romantic evening cruise along the Seine with champagne and views of illuminated landmarks.</li>
+                        <li><strong>Authentic Accommodations:</strong> Stay in a boutique hotel in the heart of the vibrant Marais district.</li>
+                    </ul>
+                `,
+                gallery: [
+                    'https://static.independent.co.uk/2024/08/30/14/newFile-3.jpg',
+                    'https://assets.vogue.com/photos/6218fcc837c1650694d524f5/master/w_2560%2Cc_limit/GettyImages-499255397.jpg',
+                    'https://cdn.britannica.com/38/122038-050-E55548B5/Eiffel-Tower-Paris-France.jpg',
+                    'https://lp-cms-production.imgix.net/2021-05/shutterstockRF_365207316.jpg',
+                    'https://i.natgeofe.com/n/41032cd0-9cf3-4796-8d96-bcd431f0a6db/louvre-paris-france.jpg',
+                    'https://www.thetrainline.com/cms/media/1360/france-paris-eiffel-tower-dawn.jpg?mode=crop&width=1080&height=1080&quality=70'
+                ],
+                itinerary: [
+                    {
+                        day: 'Day 1: Bienvenue à Paris',
+                        description: 'Arrive at Charles de Gaulle Airport and private transfer to your boutique hotel in the Marais. Afternoon orientation walking tour of the neighborhood, followed by a welcome dinner at a classic French bistro.'
+                    },
+                    {
+                        day: 'Day 2: Iconic Paris',
+                        description: 'Morning visit to the Eiffel Tower with skip-the-line access and impressive city views. Afternoon at the Louvre Museum with expert guide focusing on masterpieces like the Mona Lisa. Evening Seine River cruise with champagne.'
+                    },
+                    {
+                        day: 'Day 3: Artistic Paris',
+                        description: 'Morning visit to Montmartre, including Sacré-Cœur Basilica and the artists square. Afternoon at the Musée d Orsay to admire impressionist masterpieces. Evening pastry-making class with a professional pâtissier.'
+                    },
+                    {
+                        day: 'Day 4: Hidden Paris',
+                        description: 'Morning food tour through local markets and specialty shops with tastings. Afternoon visit to the Latin Quarter and Notre-Dame Cathedral exterior. Free evening to explore or optional dinner at a Michelin-starred restaurant.'
+                    },
+                    {
+                        day: 'Day 5: Farewell to Paris',
+                        description: 'Morning at leisure for shopping on the Champs-Élysées or visiting the beautiful Luxembourg Gardens. Private transfer to the airport for your departure flight.'
+                    }
+                ],
+                reviews: [
+                    {
+                        name: 'Emma L.',
+                        avatar: 'EL',
+                        date: 'April 2024',
+                        rating: 5,
+                        comment: 'Our Paris trip was magical! The skip-the-line access saved us so much time, and our guide Marie was incredibly knowledgeable about art and history. The pastry class was a highlight!'
+                    },
+                    {
+                        name: 'John and Carol P.',
+                        avatar: 'JP',
+                        date: 'October 2024',
+                        rating: 4,
+                        comment: 'Beautiful city and excellent tour organization. The hotel was charming and perfectly located. Would have appreciated a bit more free time to explore on our own.'
+                    },
+                    {
+                        name: 'Thomas B.',
+                        avatar: 'TB',
+                        date: 'May 2024',
+                        rating: 5,
+                        comment: 'This was our first trip to Paris, and it couldn t have been better. The Seine cruise was romantic and the food tour introduced us to so many delicious French specialties. Already planning our return!'
+                    }
+                ]
+            },
+            bangkok: {
+                title: 'Bangkok, Thailand',
+                price: '$1,800',
+                priceValue: 1800,
+                description: `
+                    <p>Discover the vibrant energy of Bangkok, where ancient traditions meet modern urban life. Thailand's capital offers an intoxicating mix of ornate temples, bustling markets, delectable street food, and warm hospitality.</p>
+                    <p>Our immersive experience takes you through the city's iconic landmarks while also providing authentic cultural encounters and culinary adventures that reveal the true essence of this fascinating metropolis.</p>
+                `,
+                highlights: `
+                    <ul>
+                        <li><strong>Temple Tours:</strong> Visit the magnificent Grand Palace, Wat Pho (Temple of the Reclining Buddha), and Wat Arun (Temple of Dawn).</li>
+                        <li><strong>Floating Market Experience:</strong> Explore the colorful Damnoen Saduak floating market by traditional longtail boat.</li>
+                        <li><strong>Thai Cooking Class:</strong> Learn to prepare authentic Thai dishes with expert chefs using fresh market ingredients.</li>
+                        <li><strong>Luxury Accommodations:</strong> Stay at a premium riverside hotel with stunning views of the Chao Phraya River.</li>
+                    </ul>
+                `,
+                gallery: [
+                    'https://res-1.cloudinary.com/gorealtravel/image/upload/v1563889832/production/marketing/city/5d3181c870428e0008e0845c/city_main_image/BANGKOK.jpg',
+                    'https://cms-visit.bangkok.go.th/uploads/Frame_352_51a708d408_52c6ee4aa8.jpeg',
+                    'https://media.cntraveller.com/photos/611bf48992666f1cdcc9759c/master/w_2580%2Ch_1860%2Cc_limit/86516346.jpg',
+                    'https://a.cdn-hotels.com/gdcs/production195/d1275/e850bad0-c134-11e8-9739-0242ac110006.jpg',
+                    'https://media.tacdn.com/media/attractions-splice-spp-720x480/0b/27/54/c8.jpg',
+                    'https://a.travel-assets.com/findyours-php/viewfinder/images/res70/508000/508056-Bangkok.jpg'
+                ],
+                itinerary: [
+                    {
+                        day: 'Day 1: Arrival in Bangkok',
+                        description: 'Arrive at Suvarnabhumi International Airport and private transfer to your luxury riverside hotel. Evening welcome dinner cruise on the Chao Phraya River with traditional Thai performances.'
+                    },
+                    {
+                        day: 'Day 2: Historic Bangkok',
+                        description: 'Morning visit to the Grand Palace and Wat Phra Kaew (Temple of the Emerald Buddha). Afternoon exploration of Wat Pho to see the famous Reclining Buddha and traditional Thai massage school. Cross the river to visit Wat Arun with its stunning porcelain mosaic towers.'
+                    },
+                    {
+                        day: 'Day 3: Markets & Culinary Experience',
+                        description: 'Early morning excursion to the Damnoen Saduak floating market. Afternoon Thai cooking class, beginning with selecting ingredients from a local market, followed by preparing and enjoying your own Thai feast.'
+                    },
+                    {
+                        day: 'Day 4: Modern Bangkok',
+                        description: 'Morning visit to Jim Thompson House Museum. Afternoon shopping at Siam Paragon and exploration of the trendy Thonglor district. Evening food tour through Chinatowns street food stalls and hidden restaurants.'
+                    },
+                    {
+                        day: 'Day 5: Hidden Canals & Local Life',
+                        description: 'Morning longtail boat tour through Bangkoks ancient canal system to see local life along the waterways. Afternoon visit to a local community to learn traditional crafts. Evening farewell dinner at a rooftop restaurant with panoramic city views.'
+                    },
+                    {
+                        day: 'Day 6: Departure Day',
+                        description: 'Final morning at leisure for last-minute shopping or optional visit to Lumphini Park. Private transfer to the airport for your departure flight.'
+                    }
+                ],
+                reviews: [
+                    {
+                        name: 'Jessica H.',
+                        avatar: 'JH',
+                        date: 'November 2024',
+                        rating: 5,
+                        comment: 'Bangkok was an amazing sensory experience! The temples were breathtaking, and the cooking class was so much fun. Our guide Chai made everything easy and shared so many interesting cultural insights.'
+                    },
+                    {
+                        name: 'Mark W.',
+                        avatar: 'MW',
+                        date: 'September 2024',
+                        rating: 4,
+                        comment: 'Incredible city with so much to see. The hotel was excellent and perfectly located. The floating market was a bit touristy but still enjoyable. The food was the highlight - absolutely delicious everywhere we went!'
+                    },
+                    {
+                        name: 'Amanda P.',
+                        avatar: 'AP',
+                        date: 'January 2025',
+                        rating: 5,
+                        comment: 'This trip exceeded my expectations! The temples were even more beautiful in person, and the river cruise was magical. Our guide was so knowledgeable and helped us navigate the busy city with ease. Highly recommend!'
+                    }
+                ]
+            },
+            santorini: {
+                title: 'Santorini, Greece',
+                price: '$2,100',
+                priceValue: 2100,
+                description: `
+                    <p>Experience the breathtaking beauty of Santorini, with its iconic white-washed buildings cascading down volcanic cliffs and spectacular views of the azure Aegean Sea. This Greek island paradise offers the perfect blend of natural beauty, rich history, and Mediterranean charm.</p>
+                    <p>Our curated Santorini experience highlights the island's most picturesque villages, volcanic beaches, ancient ruins, and world-famous sunsets while providing authentic cultural encounters and exquisite local cuisine.</p>
+                `,
+                highlights: `
+                    <ul>
+                        <li><strong>Cliffside Accommodations:</strong> Stay in a boutique hotel with private terraces overlooking the caldera in the village of Oia.</li>
+                        <li><strong>Sunset Sailing:</strong> Cruise around the island's volcanic islands with swimming stops and a sunset dinner.</li>
+                        <li><strong>Wine Tasting:</strong> Sample Santorini's unique volcanic wines at traditional wineries with spectacular views.</li>
+                        <li><strong>Ancient History:</strong> Explore the prehistoric settlement of Akrotiri, known as the "Greek Pompeii."</li>
+                    </ul>
+                `,
+                gallery: [
+                    'https://i.natgeofe.com/n/f8b99a77-d194-4b0c-9b6e-583fcce7fdff/santorini-greece_3x2.jpg',
+                    'https://www.travelandleisure.com/thmb/wBz4_r2-HJXqV0x1a2s4A_lQLiU=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/santorini-greece-SANTORINITG0721-3af0d0119dd949e8a7e8d9c86c273685.jpg',
+                    'https://www.planetware.com/photos-large/GR/greece-santorini-oia-sunset.jpg',
+                    'https://media.cntraveler.com/photos/63483e15ef943eff59de603a/master/w_3000,h_2249,c_limit/Santorini_GettyImages-1337285041.jpg',
+                    'https://theworldtravelguy.com/wp-content/uploads/2022/04/DJI_0374.jpg',
+                    'https://media.timeout.com/images/105731110/image.jpg'
+                ],
+                itinerary: [
+                    {
+                        day: 'Day 1: Welcome to Paradise',
+                        description: 'Arrive at Santorini International Airport and private transfer to your cliffside hotel in Oia. Evening orientation walk through the village followed by a welcome dinner at a traditional taverna with caldera views at sunset.'
+                    },
+                    {
+                        day: 'Day 2: Oia & Fira Exploration',
+                        description: 'Morning guided walking tour of Oias narrow streets, blue-domed churches, and artisan shops. Afternoon hike along the caldera path to Fira, stopping at panoramic viewpoints. Evening at leisure to enjoy the famous Oia sunset.'
+                    },
+                    {
+                        day: 'Day 3: Volcanic Discoveries',
+                        description: 'Morning visit to the archaeological site of Akrotiri to see the remarkably preserved Minoan settlement. Afternoon catamaran cruise around the volcanic islands with swimming stops at Red Beach, White Beach, and hot springs. Sunset dinner aboard with fresh seafood and local wine.'
+                    },
+                    {
+                        day: 'Day 4: Island Flavors',
+                        description: 'Morning cooking class using local ingredients, followed by lunch enjoying your creations. Afternoon wine tour visiting three traditional wineries to taste Santorinis unique volcanic wines, including the famous Assyrtiko. Evening at leisure in Fira to explore or shop.'
+                    },
+                    {
+                        day: 'Day 5: Farewell to Santorini',
+                        description: 'Final morning to relax at your hotel or visit Perissa Black Sand Beach. Private transfer to the airport for your departure flight.'
+                    }
+                ],
+                reviews: [
+                    {
+                        name: 'Catherine J.',
+                        avatar: 'CJ',
+                        date: 'June 2024',
+                        rating: 5,
+                        comment: 'Our Santorini trip was absolutely magical! The views from our hotel were breathtaking, and the sunset cruise was unforgettable. Every meal was delicious, especially during the cooking class where we learned to make authentic Greek dishes.'
+                    },
+                    {
+                        name: 'Daniel & Michelle R.',
+                        avatar: 'DR',
+                        date: 'August 2024',
+                        rating: 5,
+                        comment: 'Perfect honeymoon destination! The caldera views, the warm hospitality, and those famous sunsets exceeded all our expectations. Our guide Nikos was wonderful and gave us great recommendations for hidden local spots.'
+                    },
+                    {
+                        name: 'Laura M.',
+                        avatar: 'LM',
+                        date: 'May 2024',
+                        rating: 4,
+                        comment: 'Santorini is as beautiful as in the photos. The wine tour was exceptional - I had no idea Greece produced such excellent wines. Only giving 4 stars because it was a bit crowded in some areas, but our guide helped us avoid the worst of it.'
+                    }
+                ]
+            },
+            cusco: {
+                title: 'Cusco & Machu Picchu',
+                price: '$2,400',
+                priceValue: 2400,
+                description: `
+                    <p>Journey to the heart of the ancient Inca civilization with our immersive exploration of Cusco, the Sacred Valley, and the magnificent Machu Picchu. This adventure combines archaeological wonders, breathtaking mountain landscapes, and rich Peruvian culture.</p>
+                    <p>Our carefully crafted experience provides insider access to both iconic sites and off-the-beaten-path locations, with expert guides who bring the fascinating history and traditions of the Andes to life.</p>
+                `,
+                highlights: `
+                    <ul>
+                        <li><strong>Machu Picchu Sunrise:</strong> Private guided tour of Machu Picchu at sunrise before the crowds arrive.</li>
+                        <li><strong>Sacred Valley Exploration:</strong> Visit ancient Incan fortresses, traditional markets, and cultural sites throughout the Sacred Valley.</li>
+                        <li><strong>Authentic Encounters:</strong> Connect with local communities and participate in traditional Andean ceremonies.</li>
+                        <li><strong>Luxury Train Journey:</strong> Travel to Machu Picchu on the panoramic Vistadome train with spectacular mountain views.</li>
+                    </ul>
+                `,
+                gallery: [
+                    'https://cdn.britannica.com/31/122031-050-F8458F25/Machu-Picchu.jpg',
+                    'https://content.r9cdn.net/rimg/dimg/db/02/06b291e8-city-14912-171317ed83a.jpg?width=1366&height=768&xhint=1735&yhint=2084&crop=true',
+                    'https://media.tacdn.com/media/attractions-splice-spp-674x446/07/03/1c/9c.jpg',
+                    'https://www.intrepidtravel.com/adventures/wp-content/uploads/2018/06/1.-Intrepid-Travel-peru_cusco_streets.jpg',
+                    'https://www.machupicchu.org/peru_machu_picchu_sacred_valley_images/pisac_terraces_view.jpg',
+                    'https://live.staticflickr.com/3429/3770498478_23876abc99_b.jpg'
+                ],
+                itinerary: [
+                    {
+                        day: 'Day 1: Arrival in Cusco',
+                        description: 'Arrive at Cusco Airport and private transfer to your boutique hotel in the historic center. Afternoon at leisure to acclimatize to the altitude. Evening orientation walk and welcome dinner featuring Andean cuisine and traditional music.'
+                    },
+                    {
+                        day: 'Day 2: Cusco Exploration',
+                        description: 'Morning tour of Cuscos highlights, including the Plaza de Armas, Cathedral, and Qorikancha (Temple of the Sun). Afternoon visit to the impressive Inca ruins surrounding Cusco, including Sacsayhuamán fortress with its massive stone walls.'
+                    },
+                    {
+                        day: 'Day 3: Sacred Valley Discovery',
+                        description: 'Full-day exploration of the Sacred Valley, visiting the ancient circular terraces of Moray, the salt mines of Maras, and the traditional market and ruins at Pisac. Overnight at a luxury hotel in Urubamba.'
+                    },
+                    {
+                        day: 'Day 4: Ollantaytambo & Machu Picchu',
+                        description: 'Morning visit to the Inca fortress town of Ollantaytambo. Afternoon scenic Vistadome train journey to Aguas Calientes. Evening briefing about your Machu Picchu visit with your expert guide.'
+                    },
+                    {
+                        day: 'Day 5: Machu Picchu Wonder',
+                        description: 'Pre-dawn departure to be among the first to enter Machu Picchu. Witness the sunrise over the ancient city, followed by a comprehensive guided tour of the citadel. Optional hike to the Sun Gate or Huayna Picchu (additional permit required). Afternoon return to Cusco by train and private transfer.'
+                    },
+                    {
+                        day: 'Day 6: Cusco Culinary Experience',
+                        description: 'Morning visit to San Pedro Market with a local chef to select ingredients, followed by a Peruvian cooking class and lunch. Afternoon free for shopping or museums. Farewell dinner at one of Cuscos finest restaurants.'
+                    },
+                    {
+                        day: 'Day 7: Departure Day',
+                        description: 'Final morning at leisure before your private transfer to Cusco Airport for your departure flight.'
+                    }
+                ],
+                reviews: [
+                    {
+                        name: 'James W.',
+                        avatar: 'JW',
+                        date: 'October 2024',
+                        rating: 5,
+                        comment: 'The trip of a lifetime! Seeing Machu Picchu at sunrise was a spiritual experience. Our guide Eduardo was incredibly knowledgeable about Inca history and made every site come alive with stories. The accommodations were excellent throughout.'
+                    },
+                    {
+                        name: 'Ana G.',
+                        avatar: 'AG',
+                        date: 'September 2024',
+                        rating: 5,
+                        comment: 'Perfect organization from start to finish. The Sacred Valley was just as impressive as Machu Picchu itself. Loved the cooking class and learning about local ingredients. Take the altitude advice seriously though - glad we had a day to adjust!'
+                    },
+                    {
+                        name: 'Paul & Susan K.',
+                        avatar: 'PK',
+                        date: 'July 2024',
+                        rating: 4,
+                        comment: 'Amazing historical sites and beautiful landscapes. The train journey was spectacular and the hotels were charming. Only suggestion would be a bit more free time in Cusco to explore on our own pace.'
+                    }
+                ]
+            }
+        };
+
+        // Current user information
+        function getCurrentUser() {
+            return 'Parvanendu';
+        }
+        
+        // Get current date and time
+        function getCurrentDateTime() {
+            return '2025-03-06 12:54:27';
+        }
+
+        // Initialize the page when the DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log(`Page loaded by ${getCurrentUser()} at ${getCurrentDateTime()}`);
+            setupEventListeners();
+            checkBackToTopButton();
+            setDefaultDates();
+        });
+
+        // Set up event listeners
+        function setupEventListeners() {
+            // Clear search button
+            const clearSearchBtn = document.getElementById('clear-search');
+            if(clearSearchBtn) {
+                clearSearchBtn.addEventListener('click', function() {
+                    document.getElementById('search-bar').value = '';
+                });
+            }
+            
+            // Reset filters button
+            const resetFiltersBtn = document.getElementById('reset-filters');
+            if(resetFiltersBtn) {
+                resetFiltersBtn.addEventListener('click', resetFilters);
+            }
+            
+            // Price range slider
+            const priceSlider = document.getElementById('price-range');
+            if(priceSlider) {
+                priceSlider.addEventListener('input', function() {
+                    document.getElementById('price-max').textContent = '$' + this.value;
+                });
+            }
+            
+            // Back to top visibility
+            window.addEventListener('scroll', checkBackToTopButton);
+            
+            // Modal close on escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeModal();
+                }
+            });
+            
+            // Modal close when clicking outside
+            const modal = document.getElementById('modal');
+            if(modal) {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === modal) {
+                        closeModal();
+                    }
+                });
+            }
+            
+            // Sort destinations
+            const sortSelect = document.getElementById('sort-select');
+            if(sortSelect) {
+                sortSelect.addEventListener('change', function() {
+                    sortDestinations(this.value);
+                });
+            }
+        }
+
+        // Filter destinations based on search and filter criteria
+        function filterDestinations(event) {
+            event.preventDefault();
+            
+            let searchQuery = document.getElementById('search-bar').value.toLowerCase();
+            let typeFilter = document.getElementById('type-filter').value.toLowerCase();
+            let regionFilter = document.getElementById('region-filter').value.toLowerCase();
+            let seasonFilter = document.getElementById('season-filter').value.toLowerCase();
+            let priceFilter = parseInt(document.getElementById('price-range').value);
+            
+            let filteredCount = 0;
+            
+            document.querySelectorAll('.tour-card').forEach(card => {
+                let name = card.getAttribute('data-name').toLowerCase();
+                let type = card.getAttribute('data-type').toLowerCase();
+                let region = card.getAttribute('data-region').toLowerCase();
+                let season = card.getAttribute('data-season').toLowerCase();
+                let price = parseInt(card.getAttribute('data-price') || 0);
+                
+                let isVisible = (!searchQuery || name.includes(searchQuery)) &&
+                                (!typeFilter || type === typeFilter) &&
+                                (!regionFilter || region === regionFilter) &&
+                                (!seasonFilter || season === seasonFilter) &&
+                                price <= priceFilter;
+                
+                card.style.display = isVisible ? 'block' : 'none';
+                
+                if(isVisible) filteredCount++;
+            });
+            
+            // Update results count
+            const resultsCount = document.getElementById('results-count');
+            if(resultsCount) {
+                resultsCount.textContent = filteredCount === 1 ? 
+                    '1 destination found' : 
+                    `${filteredCount} destinations found`;
+            }
+            
+            // Show/hide empty results message
+            const emptyResults = document.getElementById('empty-results');
+            if(emptyResults) {
+                emptyResults.style.display = filteredCount === 0 ? 'flex' : 'none';
+            }
+            
+            // Log filter action
+            console.log(`User ${getCurrentUser()} filtered destinations at ${getCurrentDateTime()}`);
+        }
+
+        // Reset all filters to default values
+        function resetFilters() {
+            document.getElementById('search-bar').value = '';
+            document.getElementById('type-filter').selectedIndex = 0;
+            document.getElementById('region-filter').selectedIndex = 0;
+            document.getElementById('season-filter').selectedIndex = 0;
+            document.getElementById('price-range').value = 5000;
+            document.getElementById('price-max').textContent = '$5000';
+            
+            document.querySelectorAll('.tour-card').forEach(card => {
+                card.style.display = 'block';
+            });
+            
+            document.getElementById('results-count').textContent = 'Showing all destinations';
+            
+            if(document.getElementById('empty-results')) {
+                document.getElementById('empty-results').style.display = 'none';
+            }
+            
+            console.log(`User ${getCurrentUser()} reset filters at ${getCurrentDateTime()}`);
+        }
+
+        // Sort destinations by different criteria
+        function sortDestinations(sortBy) {
+            const destinationsGrid = document.getElementById('destinations-grid');
+            const cards = Array.from(destinationsGrid.querySelectorAll('.tour-card'));
+            
+            switch(sortBy) {
+                case 'price-low':
+                    cards.sort((a, b) => parseInt(a.getAttribute('data-price')) - parseInt(b.getAttribute('data-price')));
+                    break;
+                case 'price-high':
+                    cards.sort((a, b) => parseInt(b.getAttribute('data-price')) - parseInt(a.getAttribute('data-price')));
+                    break;
+                case 'duration':
+                    cards.sort((a, b) => {
+                        let aDuration = a.querySelector('.card-info span:first-child').textContent;
+                        let bDuration = b.querySelector('.card-info span:first-child').textContent;
+                        let aNum = parseInt(aDuration.match(/\d+/)[0]);
+                        let bNum = parseInt(bDuration.match(/\d+/)[0]);
+                        return bNum - aNum;
+                    });
+                    break;
+                default: // recommended
+                    break;
+            }
+            
+            // Clear and re-append sorted cards
+            cards.forEach(card => destinationsGrid.appendChild(card));
+            
+            console.log(`User ${getCurrentUser()} sorted destinations by ${sortBy} at ${getCurrentDateTime()}`);
+        }
+
+        // Open destination details modal
+        function openModal(destinationName) {
+            const destination = destinationData[destinationName];
+            if (!destination) return;
+            
+            // Set basic modal content
+            document.getElementById('modal-title').textContent = destination.title;
+            document.getElementById('modal-details').innerHTML = destination.description;
+            document.getElementById('highlights-content').innerHTML = destination.highlights;
+            document.getElementById('modal-price').textContent = destination.price;
+            
+            // Set gallery content
+            const galleryHTML = destination.gallery.map(img => 
+                `<img src="${img}" alt="${destination.title}" onclick="openFullImage('${img}')">`
+            ).join('');
+            document.getElementById('modal-gallery').innerHTML = galleryHTML;
+            
+            // Set itinerary content
+            const itineraryHTML = destination.itinerary.map(day => `
+                <div class="itinerary-day">
+                    <h4>${day.day}</h4>
+                    <p>${day.description}</p>
+                </div>
+            `).join('');
+            document.getElementById('itinerary-content').innerHTML = itineraryHTML;
+            
+            // Set reviews content
+            const reviewsHTML = destination.reviews.map(review => `
+                <div class="review-item">
+                    <div class="reviewer-info">
+                        <div class="reviewer-avatar">${review.avatar}</div>
+                        <div class="reviewer-details">
+                            <div class="reviewer-name">${review.name}</div>
+                            <div class="review-date">${review.date}</div>
+                        </div>
+                    </div>
+                    <div class="review-stars">
+                        ${getStarRating(review.rating)}
+                    </div>
+                    <div class="review-text">${review.comment}</div>
+                </div>
+            `).join('');
+            document.getElementById('reviews-content').innerHTML = reviewsHTML;
+            
+            // Reset active tab to overview
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-pane').forEach(pane => {
+                pane.classList.remove('active');
+            });
+            document.querySelector('.tab-btn[data-tab="overview"]').classList.add('active');
+            document.getElementById('overview').classList.add('active');
+            
+            // Show the modal
+            document.getElementById('modal').style.display = 'flex';
+            
+            // Log modal open event
+            console.log(`User ${getCurrentUser()} viewed ${destinationName} details at ${getCurrentDateTime()}`);
+        }
+
+        // Close the modal
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+
+        // Switch between modal tabs
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-pane').forEach(pane => {
+                pane.classList.remove('active');
+            });
+            
+            document.querySelector(`.tab-btn[data-tab="${tabName}"]`).classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+        }
+
+        // Generate HTML for star ratings
+        function getStarRating(rating) {
+            let stars = '';
+            for (let i = 1; i <= 5; i++) {
+                if (i <= rating) {
+                    stars += '<i class="fas fa-star"></i>';
+                } else if (i - 0.5 <= rating) {
+                    stars += '<i class="fas fa-star-half-alt"></i>';
+                } else {
+                    stars += '<i class="far fa-star"></i>';
+                }
+            }
+            return stars;
+        }
+
+        // Increase number of travelers
+        function increaseTravelers() {
+            const travelerCount = document.getElementById('traveler-count');
+            let count = parseInt(travelerCount.textContent);
+            if (count < 10) {
+                travelerCount.textContent = count + 1;
+            }
+        }
+
+              // Decrease number of travelers
+              function decreaseTravelers() {
+            const travelerCount = document.getElementById('traveler-count');
+            let count = parseInt(travelerCount.textContent);
+            if (count > 1) {
+                travelerCount.textContent = count - 1;
+            }
+        }
+
+        // Book trip function
+        function bookTrip() {
+            const tripDate = document.getElementById('trip-date').value;
+            const travelers = document.getElementById('traveler-count').textContent;
+            const destination = document.getElementById('modal-title').textContent;
+            
+            if (!tripDate) {
+                alert('Please select a travel date');
+                return;
+            }
+            
+            // In a real application, this would submit to a backend
+            alert(`Thank you for booking your trip to ${destination} for ${travelers} travelers on ${tripDate}. A confirmation email will be sent shortly.`);
+            
+            // Log booking event
+            console.log(`User ${getCurrentUser()} booked trip to ${destination} at ${getCurrentDateTime()}`);
+        }
+
+        // Show/hide back to top button based on scroll position
+        function checkBackToTopButton() {
+            const backToTopButton = document.getElementById('back-to-top');
+            if (backToTopButton) {
+                if (window.scrollY > 500) {
+                    backToTopButton.classList.add('visible');
+                } else {
+                    backToTopButton.classList.remove('visible');
+                }
+            }
+        }
+
+        // Scroll to top of page
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // Set default minimum dates for date inputs
+        function setDefaultDates() {
+            const dateInputs = document.querySelectorAll('input[type="date"]');
+            const today = new Date();
+            const tomorrow = new Date(today);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            
+            const formattedTomorrow = tomorrow.toISOString().split('T')[0];
+            
+            dateInputs.forEach(input => {
+                input.min = formattedTomorrow;
+            });
+        }
+
+        // Open full-size image
+        function openFullImage(imgSrc) {
+            const modal = document.createElement('div');
+            modal.style.position = 'fixed';
+            modal.style.top = '0';
+            modal.style.left = '0';
+            modal.style.width = '100%';
+            modal.style.height = '100%';
+            modal.style.backgroundColor = 'rgba(0,0,0,0.9)';
+            modal.style.display = 'flex';
+            modal.style.alignItems = 'center';
+            modal.style.justifyContent = 'center';
+            modal.style.zIndex = '2000';
+            modal.style.cursor = 'zoom-out';
+            
+            const img = document.createElement('img');
+            img.src = imgSrc;
+            img.style.maxHeight = '90%';
+            img.style.maxWidth = '90%';
+            img.style.objectFit = 'contain';
+            img.style.boxShadow = '0 0 20px rgba(255,255,255,0.2)';
+            
+            modal.appendChild(img);
+            document.body.appendChild(modal);
+            
+            modal.addEventListener('click', function() {
+                document.body.removeChild(modal);
+            });
+        }
+
+        // Current user information
+        function getCurrentUser() {
+            return 'donlj';
+        }
+        
+        // Get current date and time
+        function getCurrentDateTime() {
+            return '2025-03-06 12:56:30';
+        }
+
+        // Search for packages using external API
+        async function searchExternalDestinations(query) {
+            try {
+                console.log(`Searching external destinations for "${query}" by user ${getCurrentUser()}`);
+                await new Promise(resolve => setTimeout(resolve, 800));
+                
+                // Return matching destinations from our existing data
+                const matches = Object.entries(destinationData)
+                    .filter(([key, destination]) => {
+                        return destination.title.toLowerCase().includes(query.toLowerCase()) ||
+                               key.toLowerCase().includes(query.toLowerCase());
+                    })
+                    .map(([key, destination]) => ({
+                        id: key,
+                        name: destination.title,
+                        price: destination.priceValue,
+                        image: destination.gallery[0],
+                        region: document.querySelector(`.tour-card[data-name="${key}"]`).getAttribute('data-region')
+                    }));
+                
+                return matches;
+            } catch (error) {
+                console.error('Error searching external destinations:', error);
+                return [];
+            }
+        }
+    </script>
+</body>
+</html>

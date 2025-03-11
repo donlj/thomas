@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Travel Packages</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Hind:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    * {
+      border: 0;
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      font-size: calc(16px + (24 - 16)*(100vw - 320px)/(1920 - 320));
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #000000;
+      color: #333;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body, button, input {
+      font: 1em Hind, sans-serif;
+      line-height: 1.5em;
+    }
+
+    body {
+      background: linear-gradient(45deg, #000000, #000000, #000000, #000000);
+      background-size: 400% 400%;
+      animation: gradientShift 5s ease infinite;
+      display: flex;
+      flex-direction: column;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    header {
+      background: linear-gradient(135deg, #040a10, #6794c5);
+      color: white;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      position: relative;
+      z-index: 1001;
+    }
+
+    header .logo {
+      font-size: 24px;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    header nav {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+
+    header nav a {
+      color: white;
+      text-decoration: none;
+      font-size: 16px;
+      padding: 10px 20px;
+      border-radius: 30px;
+      transition: background-color 0.3s, transform 0.2s, box-shadow 0.2s;
+      font-weight: 500;
+    }
+
+    header nav a.active {
+      background: #18658f;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    header nav a:hover {
+      background-color: #18658f;
+      transform: scale(1.1);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Expandable Search Bar Styles */
+    .search-container {
+      position: relative;
+    }
+
+    .search-bar {
+      display: flex;
+      margin: 0;
+      padding: 0;
+      justify-content: center;
+      max-width: 15em;
+      transition: max-width 0.3s ease;
+    }
+
+    .search-bar input,
+    .search-btn, 
+    .search-btn:before, 
+    .search-btn:after {
+      transition: all 0.25s ease-out;
+    }
+
+    .search-bar input,
+    .search-btn {
+      width: 3em;
+      height: 3em;
+    }
+
+    .search-bar input:invalid:not(:focus),
+    .search-btn {
+      cursor: pointer;
+    }
+
+    .search-bar,
+    .search-bar input:focus,
+    .search-bar input:valid {
+      width: 100%;
+    }
+
+    .search-bar input:focus,
+    .search-bar input:not(:focus) + .search-btn:focus {
+      outline: transparent;
+    }
+
+    .search-bar input {
+      background: transparent;
+      border-radius: 1.5em;
+      box-shadow: 0 0 0 0.4em #ffffff inset;
+      padding: 0.75em;
+      transform: translate(0.5em,0.5em) scale(0.5);
+      transform-origin: 100% 0;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      color: #ffffff;
+    }
+
+    .search-bar input::-webkit-search-decoration {
+      -webkit-appearance: none;
+    }
+
+    .search-bar input:focus,
+    .search-bar input:valid {
+      background: #040a10;
+      border-radius: 0.375em 0 0 0.375em;
+      box-shadow: 0 0 0 0.1em #6794c5 inset;
+      transform: scale(1);
+      color: white;
+    }
+
+    .search-btn {
+      background: #ffffff;
+      border-radius: 0 0.75em 0.75em 0 / 0 1.5em 1.5em 0;
+      padding: 0.75em;
+      position: relative;
+      transform: translate(0.25em,0.25em) rotate(45deg) scale(0.25,0.125);
+      transform-origin: 0 50%;
+    }
+
+    .search-btn:before, 
+    .search-btn:after {
+      content: "";
+      display: block;
+      opacity: 0;
+      position: absolute;
+    }
+
+    .search-btn:before {
+      border-radius: 50%;
+      box-shadow: 0 0 0 0.2em #040a10 inset;
+      top: 0.75em;
+      left: 0.75em;
+      width: 1.2em;
+      height: 1.2em;
+    }
+
+    .search-btn:after {
+      background: #040a10;
+      border-radius: 0 0.25em 0.25em 0;
+      top: 51%;
+      left: 51%;
+      width: 0.75em;
+      height: 0.25em;
+      transform: translate(0.2em,0) rotate(45deg);
+      transform-origin: 0 50%;
+    }
+
+    .search-btn span {
+      display: inline-block;
+      overflow: hidden;
+      width: 1px;
+      height: 1px;
+    }
+
+    /* Active search state */
+    .search-bar input:focus + .search-btn,
+    .search-bar input:valid + .search-btn {
+      background: #2762f3;
+      border-radius: 0 0.375em 0.375em 0;
+      transform: scale(1);
+    }
+
+    .search-bar input:focus + .search-btn:before, 
+    .search-bar input:focus + .search-btn:after,
+    .search-bar input:valid + .search-btn:before, 
+    .search-bar input:valid + .search-btn:after {
+      opacity: 1;
+    }
+
+    .search-bar input:focus + .search-btn:hover,
+    .search-bar input:valid + .search-btn:hover,
+    .search-bar input:valid:not(:focus) + .search-btn:focus {
+      background: #0c48db;
+    }
+
+    .search-bar input:focus + .search-btn:active,
+    .search-bar input:valid + .search-btn:active {
+      transform: translateY(1px);
+    }
+
+    /* Search suggestions */
+    .search-suggestions {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      background: #040a10;
+      border-radius: 0 0 8px 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      z-index: 1002;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+
+    .search-suggestions.active {
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .suggestion-item {
+      padding: 10px 15px;
+      color: white;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .suggestion-item:hover {
+      background: #18658f;
+    }
+
+    .suggestion-item img {
+      width: 40px;
+      height: 40px;
+      border-radius: 5px;
+      object-fit: cover;
+    }
+
+    /* Content wrapper */
+    .content-wrapper {
+      position: relative;
+      min-height: calc(100vh - 130px);
+      display: flex;
+      background: #000000;
+    }
+
+    /* Filter toggle button */
+    .filter-toggle {
+      position: fixed;
+      top: 100px;
+      left: 20px;
+      background-color: #007bff;
+      color: white;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      z-index: 1000;
+      transition: all 0.3s ease;
+    }
+
+    .filter-toggle:hover {
+      transform: scale(1.1);
+    }
+
+    .filter-toggle i {
+      font-size: 22px;
+    }
+
+    /* Filters sidebar */
+    .filters {
+      display: none;
+      background-color: #e9ecef;
+      padding: 20px;
+      border-right: 3px solid #ccc;
+      width: 250px;
+      z-index: 999;
+      overflow-y: auto;
+      min-height: 100%;
+    }
+    
+    .filters.active {
+      display: block;
+    }
+
+    /* Filters header */
+    .filters-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      padding-right: 10px;
+    }
+
+    .filters-header h3 {
+      font-size: 18px;
+      color: #333;
+    }
+
+    /* Back button next to heading */
+    .back-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #333;
+      font-size: 16px;
+      transition: color 0.3s, transform 0.2s;
+    }
+
+    .back-button:hover {
+      color: #007bff;
+      transform: scale(1.1);
+    }
+
+    .back-button i {
+      margin-right: 5px;
+    }
+
+    .filters > div {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      width: 100%;
+      margin-bottom: 15px;
+    }
+
+    .filters input,
+    .filters select {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 14px;
+      width: 100%;
+      margin-top: 5px;
+    }
+
+    /* Style the Apply Button */
+    .filters button {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+      font-weight: bold;
+      font-size: 14px;
+      box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+      margin-top: 10px;
+    }
+
+    .filters button:hover {
+      background-color: #0056b3;
+      transform: scale(1.05);
+    }
+
+    /* Main content area */
+    .main-content {
+      flex: 1;
+      padding: 20px;
+      transition: margin-left 0.3s ease-in-out;
+      background: #000000;
+    }
+
+    h2 {
+      text-align: center;
+      font-size: 28px;
+      color: #00aaff;
+      margin-bottom: 30px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+      max-width: 1200px;
+      margin: auto;
+    }
+    
+    .package-card {
+      background-color: #313131;
+      padding: 20px;
+      border-radius: 15px;
+      text-align: center;
+      transition: transform 0.3s, box-shadow 0.3s;
+      cursor: pointer;
+    }
+
+    .package-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 20px rgba(0, 255, 234, 0.4);
+    }
+
+    .package-card img {
+      width: 100%;
+      height: 300px;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+
+    .package-card h3 {
+      margin: 10px 0;
+      color: #37d2c0;
+      font-size: 18px;
+    }
+
+    .package-card p {
+      font-size: 16px;
+      color: #bbb;
+    }
+
+    .modal {
+      visibility: hidden;
+      opacity: 0;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 60%;
+      max-width: 800px;
+      padding: 30px;
+      border-radius: 15px;
+      background: rgba(0, 0, 0, 0.6);
+      color: #f1f1f1;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      transition: opacity 0.3s, visibility 0.3s;
+      backdrop-filter: blur(10px);
+      z-index: 1002;
+    }
+
+    .modal::before {
+      content: "";
+      background: url('https://www.photojaanic.com/blog/wp-content/uploads/sites/2/2018/03/travel-photography-tips-photojaanic_-17.jpg') center/cover no-repeat;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0.4;
+      z-index: -1;
+      border-radius: 15px;
+    }
+
+    .modal-content {
+      text-align: left;
+      line-height: 1.6;
+    }
+
+    .modal h3 {
+      font-size: 24px;
+      font-weight: bold;
+      color: #ffcc70;
+      text-align: center;
+    }
+
+    .modal p, .modal ul {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .modal ul {
+      padding-left: 20px;
+    }
+
+    .modal ul li {
+      margin-bottom: 8px;
+    }
+
+    .close-modal {
+      background-color: #ff7f50;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 15px;
+      display: block;
+      margin-left: auto;
+    }
+
+    .close-modal:hover {
+      background-color: #e86b42;
+    }
+
+    footer {
+      background-color: #333;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      width: 100%;
+    }
+
+    footer a {
+      color: #007BFF;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* Fix for small screens */
+    @media (max-width: 992px) {
+      .grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .search-bar {
+        max-width: 12em;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .filters.active {
+        width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 999;
+      }
+      
+      .main-content {
+        padding: 20px;
+      }
+      
+      .search-bar {
+        max-width: 10em;
+      }
+    }
+    .user-info {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-left: 15px;
+}
+
+.user-dropdown {
+    position: relative;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: white;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    min-width: 200px;
+    z-index: 1000;
+    margin-top: 10px;
+}
+
+.dropdown-menu.active {
+    display: block;
+}
+
+.dropdown-menu a {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    color: #333;
+    text-decoration: none;
+    font-size: 14px;
+    transition: background-color 0.2s;
+}
+
+.dropdown-menu a i {
+    margin-right: 10px;
+    width: 18px;
+    text-align: center;
+}
+
+.dropdown-menu a:hover {
+    background-color: #f5f5f5;
+}
+
+.dropdown-divider {
+    height: 1px;
+    background-color: #eee;
+    margin: 8px 0;
+}
+
+/* User icon styling */
+.user-icon {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 8px 15px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.user-icon:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.user-icon i.fa-user-circle {
+    margin-right: 8px;
+}
+
+.user-icon i.fa-chevron-down {
+    margin-left: 8px;
+    font-size: 12px;
+    transition: transform 0.3s;
+}
+
+.dropdown-menu.active + .user-icon .fa-chevron-down {
+    transform: rotate(180deg);
+}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">Wanderly</div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="destinations.html">Destinations</a>
+      <a href="#" class="active">Packages</a>
+      <a href="login.html">Login</a>
+      <div class="search-container">
+        <form class="search-bar" id="search-form">
+          <input type="search" name="search" pattern=".*\S.*" required>
+          <button class="search-btn" type="submit">
+            <span>Search</span>
+          </button>
+        </form>
+        <div class="search-suggestions" id="search-suggestions"></div>
+      </div>
+    </nav>
+    <div class="user-info">
+      <div class="user-dropdown">
+        <div class="user-icon">
+          <i class="fas fa-user-circle"></i>
+          <span id="currentUser">donlj</span>
+          <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="dropdown-menu">
+          <a href="profile.html"><i class="fas fa-user"></i> My Profile</a>
+          <a href="bookings.html"><i class="fas fa-list"></i> My Bookings</a>
+          <a href="settings.html"><i class="fas fa-cog"></i> Account Settings</a>
+          <div class="dropdown-divider"></div>
+          <a href="#" id="logoutButton"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+      </div>
+  </header>
+
+  <!-- Filter icon button (only visible when filters are hidden) -->
+  <div class="filter-toggle" id="filter-toggle" onclick="toggleFilters()">
+    <i class="fas fa-filter"></i>
+  </div>
+
+  <div class="content-wrapper">
+    <!-- Filter sidebar -->
+    <section class="filters" id="filters-sidebar">
+      <div class="filters-header">
+        <h3>Filter Packages</h3>
+        <div class="back-button" onclick="toggleFilters()">
+          <i class="fas fa-arrow-left"></i> Back
+        </div>
+      </div>
+      <div>
+        <label for="cost-range">Cost Range:</label>
+        <input type="number" id="min-cost" placeholder="Min Cost">
+        <input type="number" id="max-cost" placeholder="Max Cost">
+      </div>
+      <div>
+        <label for="duration">Duration:</label>
+        <select id="duration">
+          <option value="any">Any</option>
+          <option value="1-3">1-3 Days</option>
+          <option value="4-7">4-7 Days</option>
+          <option value="8+">8+ Days</option>
+        </select>
+      </div>
+      <div>
+        <label for="custom-options">Customizable Options:</label>
+        <select id="custom-options">
+          <option value="all">All</option>
+          <option value="meals">Includes Meals</option>
+          <option value="transport">Includes Transport</option>
+        </select>
+      </div>
+      <button onclick="applyFilters()">Apply Filters</button>
+    </section>
+
+    <!-- Main content area -->
+    <div class="main-content" id="main-content">
+      <h2>Travel Packages</h2>
+      <div class="grid">
+        <div class="package-card" data-cost="9999" data-duration="8+" data-options="meals transport" onclick="viewDetails('Antarctica')">
+          <img src="https://media.venturatravel.org/unsafe/800x600/smart/header_media/8bf8bcb3-a306-4d9f-aa50-bb69ab5154fd-2022-12-13-day-7-pm-yalour-island-antarctica-ocean-victory-582-of-601-.jpg" alt="Antarctica - The Frozen Wilderness">
+          <h3>Antarctica – The Frozen Wilderness</h3>
+          <p>Duration: 10 Days | Cost: $9,999</p>
+        </div>
+        <div class="package-card" data-cost="2500" data-duration="4-7" data-options="meals transport" onclick="viewDetails('Bhutan')">
+          <img src="https://static.toiimg.com/photo/113386683.cms" alt="Bhutan - The Last Shangri-La">
+          <h3>Bhutan – The Last Shangri-La</h3>
+          <p>Duration: 7 Days | Cost: $2,500</p>
+        </div>
+        <div class="package-card" data-cost="3500" data-duration="4-7" data-options="meals transport" onclick="viewDetails('Socotra')">
+          <img src="https://static.toiimg.com/photo/msid-100566606,width-96,height-65.cms" alt="Socotra Island, Yemen">
+          <h3>Socotra Island, Yemen – The Alien Landscape</h3>
+          <p>Duration: 5 Days | Cost: $3,500</p>
+        </div>
+        <div class="package-card" data-cost="4000" data-duration="8+" data-options="meals transport" onclick="viewDetails('Greece')">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpTmvvC-Ff5oXxsLaVjk2MVrLt2Nxcve2upw&s" alt="Greece - Aegean Escape">
+          <h3>Greece – Aegean Escape</h3>
+          <p>Duration: 8 Days | Cost: $4,000</p>
+        </div>
+        <div class="package-card" data-cost="2200" data-duration="4-7" data-options="meals transport" onclick="viewDetails('Machu Picchu')">
+          <img src="https://i.natgeofe.com/n/819ea774-aa80-435e-af5a-ae56efee7ce3/92491.jpg" alt="Machu Picchu - The Ancient Inca Marvel">
+          <h3>Machu Picchu, Peru – The Ancient Inca Marvel</h3>
+          <p>Duration: 5 Days | Cost: $2,200</p>
+        </div>
+        <div class="package-card" data-cost="1800" data-duration="4-7" data-options="meals transport" onclick="viewDetails('Cappadocia')">
+          <img src="https://www.onthegotours.com/repository/Cappadocia-Balloons-228661391690774.jpg" alt="Cappadocia - Hot Air Balloon Over Fairy Chimneys">
+          <h3>Cappadocia, Turkey – Fairy Chimney Balloon</h3>
+          <p>Duration: 6 Days | Cost: $1,800</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal for package details -->
+  <div class="modal" id="package-modal">
+    <div class="modal-content">
+      <h3>Package Details</h3>
+      <p id="package-description">Loading...</p>
+      <h4>Itinerary:</h4>
+      <ul id="itinerary"></ul>
+      <h4>Cost Breakdown:</h4>
+      <ul id="cost-breakdown"></ul>
+      <h4>Reviews:</h4>
+      <div id="reviews">Loading reviews...</div>
+      <h4>Transport:</h4>
+      <p id="transport-details">Loading...</p>
+      <button class="close-modal" onclick="closeModal()">Close</button>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Wanderly. All Rights Reserved. <a href="#">Privacy Policy</a></p>
+  </footer>
+   
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+    // Initialize authentication
+    updateUserInfoDisplay();
+    
+    // Initialize destinations page specific components
+    console.log(`Page loaded by ${getCurrentUser()} at ${getCurrentDateTime()}`);
+    setupEventListeners();
+    checkBackToTopButton();
+    setDefaultDates();
+});
+
+function updateUserInfoDisplay() {
+    // Get elements
+    const loginLink = document.querySelector('nav a[href="login.html"]');
+    const userInfo = document.querySelector('.user-info');
+    const currentUser = document.getElementById('currentUser');
+    
+    // Check if user is logged in (currentUser has content)
+    const isLoggedIn = currentUser && currentUser.textContent.trim() !== '';
+    
+    // Toggle visibility based on login status
+    if (loginLink) {
+        loginLink.style.display = isLoggedIn ? 'none' : 'inline-block';
+    }
+    
+    if (userInfo) {
+        userInfo.style.display = isLoggedIn ? 'flex' : 'none';
+    }
+    
+    // Update username display if logged in
+    if (currentUser && isLoggedIn) {
+        currentUser.textContent = 'Parvanendu';
+    }
+    
+    // Update current date
+    const currentDateElement = document.getElementById('currentDate');
+    if (currentDateElement) {
+        currentDateElement.textContent = '2025-03-08';
+    }
+    
+    // Initialize user dropdown functionality
+    initializeUserDropdown();
+}
+
+function initializeUserDropdown() {
+    const userIcon = document.querySelector('.user-icon');
+    const dropdownMenu = document.querySelector('.dropdown-menu');
+    const logoutButton = document.getElementById('logoutButton');
+    
+    if (userIcon && dropdownMenu) {
+        userIcon.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('active');
+        });
+        
+        // Close dropdown when clicking elsewhere
+        document.addEventListener('click', function() {
+            dropdownMenu.classList.remove('active');
+        });
+    }
+    
+    if (logoutButton) {
+        logoutButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            if (confirm('Are you sure you want to logout?')) {
+                alert('You have been logged out successfully.');
+                window.location.href = 'login.html';
+            }
+        });
+    }
+}
+  // Package data for both details and search suggestions
+  const packageData = {
+    "Antarctica": {
+      name: "Antarctica – The Frozen Wilderness",
+      description: "A thrilling adventure to the frozen wilderness of Antarctica.",
+      itinerary: ["Day 1: Arrival in Antarctica", "Day 2: Exploring Icebergs", "Day 3: Wildlife Viewing", "Day 4: Departure"],
+      costBreakdown: ["Accommodation: $4000", "Meals: $800", "Transport: $1200", "Activities: $1500"],
+      reviews: ["Incredible experience!", "A once-in-a-lifetime adventure.", "Must-do for nature lovers!"],
+      transport: "Flights to Antarctica, daily boat excursions.",
+      image: "https://media.venturatravel.org/unsafe/800x600/smart/header_media/8bf8bcb3-a306-4d9f-aa50-bb69ab5154fd-2022-12-13-day-7-pm-yalour-island-antarctica-ocean-victory-582-of-601-.jpg",
+      cost: "$9,999",
+      duration: "10 Days"
+    },
+    "Bhutan": {
+      name: "Bhutan – The Last Shangri-La",
+      description: "Discover the peaceful and serene beauty of Bhutan's mountains.",
+      itinerary: ["Day 1: Arrival in Bhutan", "Day 2: Visit the Tiger's Nest Monastery", "Day 3: Explore Paro", "Day 4: Departure"],
+      costBreakdown: ["Accommodation: $1000", "Meals: $400", "Transport: $300", "Activities: $600"],
+      reviews: ["Breathtaking views", "A spiritual journey.", "Loved the peaceful vibe."],
+      transport: "Private car for the duration of the trip.",
+      image: "https://static.toiimg.com/photo/113386683.cms",
+      cost: "$2,500",
+      duration: "7 Days"
+    },
+    "Socotra": {
+      name: "Socotra Island, Yemen – The Alien Landscape",
+      description: "Experience the alien-like landscape of Socotra Island, Yemen.",
+      itinerary: ["Day 1: Arrival and Beach Camping", "Day 2: Explore Dragon's Blood Trees", "Day 3: Visit Qalansiyah Beach", "Day 4: Departure"],
+      costBreakdown: ["Accommodation: $900", "Meals: $350", "Transport: $500", "Activities: $450"],
+      reviews: ["A surreal destination!", "Truly unique landscapes.", "Untouched beauty."],
+      transport: "Chartered flights from Abu Dhabi, guided island tours.",
+      image: "https://static.toiimg.com/photo/msid-100566606,width-96,height-65.cms",
+      cost: "$3,500",
+      duration: "5 Days"
+    },
+    "Greece": {
+      name: "Greece – Aegean Escape",
+      description: "A picturesque escape to Greece's stunning Aegean islands.",
+      itinerary: ["Day 1: Arrival in Athens", "Day 2: Santorini Exploration", "Day 3: Mykonos Beach Day", "Day 4: Departure"],
+      costBreakdown: ["Accommodation: $1500", "Meals: $600", "Transport: $700", "Activities: $800"],
+      reviews: ["Beautiful sunsets!", "The best Mediterranean food.", "Relaxing and scenic."],
+      transport: "Flights to Athens, ferry transfers between islands.",
+      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpTmvvC-Ff5oXxsLaVjk2MVrLt2Nxcve2upw&s",
+      cost: "$4,000",
+      duration: "8 Days"
+    },
+    "Machu Picchu": {
+      name: "Machu Picchu, Peru – The Ancient Inca Marvel",
+      description: "Journey to the heart of the ancient Inca civilization in Peru.",
+      itinerary: ["Day 1: Arrival in Cusco", "Day 2: Sacred Valley Tour", "Day 3: Hike to Machu Picchu", "Day 4: Departure"],
+      costBreakdown: ["Accommodation: $1200", "Meals: $500", "Transport: $600", "Activities: $900"],
+      reviews: ["A historic wonder!", "Breathtaking views!", "A challenging yet rewarding experience."],
+      transport: "Flights to Cusco, guided hikes to Machu Picchu.",
+      image: "https://i.natgeofe.com/n/819ea774-aa80-435e-af5a-ae56efee7ce3/92491.jpg",
+      cost: "$2,200",
+      duration: "5 Days"
+    },
+    "Cappadocia": {
+      name: "Cappadocia, Turkey – Fairy Chimney Balloon",
+      description: "Fly over the fairy chimneys of Cappadocia in a magical hot air balloon ride.",
+      itinerary: ["Day 1: Arrival and City Tour", "Day 2: Hot Air Balloon Ride", "Day 3: Explore Underground Cities", "Day 4: Departure"],
+      costBreakdown: ["Accommodation: $1100", "Meals: $450", "Transport: $400", "Activities: $700"],
+      reviews: ["A dreamlike experience!", "The balloon ride is a must!", "Fascinating history underground."],
+      transport: "Flights to Istanbul, domestic flights to Cappadocia, guided tours.",
+      image: "https://www.onthegotours.com/repository/Cappadocia-Balloons-228661391690774.jpg",
+      cost: "$1,800",
+      duration: "6 Days"
+    }
+  };
+
+  // Search suggestions functionality
+  const searchInput = document.querySelector('.search-bar input');
+  const suggestionsContainer = document.getElementById('search-suggestions');
+  
+  // Search input event listener
+  searchInput.addEventListener('input', function() {
+    const query = this.value.toLowerCase();
+    
+    // Clear previous suggestions
+    suggestionsContainer.innerHTML = '';
+    
+    // If the input is empty, hide suggestions
+    if (!query) {
+      suggestionsContainer.classList.remove('active');
+      return;
+    }
+    
+    // Filter packages based on input
+    const matchedPackages = Object.entries(packageData).filter(([key, package]) => {
+      return package.name.toLowerCase().includes(query) || 
+             package.description.toLowerCase().includes(query) ||
+             key.toLowerCase().includes(query);
+    });
+    
+    // If we have matches, show them
+    if (matchedPackages.length > 0) {
+      suggestionsContainer.classList.add('active');
+      
+      matchedPackages.forEach(([key, package]) => {
+        const suggestionItem = document.createElement('div');
+        suggestionItem.className = 'suggestion-item';
+        suggestionItem.innerHTML = `
+          <img src="${package.image}" alt="${package.name}">
+          <div>
+            <strong>${package.name}</strong>
+            <div>${package.duration} | ${package.cost}</div>
+                    <div>
+            <strong>${package.name}</strong>
+            <div>${package.duration} | ${package.cost}</div>
+          </div>
+        `;
+        
+        // When clicking a suggestion, show package details
+        suggestionItem.addEventListener('click', function() {
+          viewDetails(key);
+          searchInput.value = package.name;
+          suggestionsContainer.classList.remove('active');
+        });
+        
+        suggestionsContainer.appendChild(suggestionItem);
+      });
+    } else {
+      // No matches found
+      const noResults = document.createElement('div');
+      noResults.className = 'suggestion-item';
+      noResults.textContent = 'No packages found';
+      suggestionsContainer.appendChild(noResults);
+      suggestionsContainer.classList.add('active');
+    }
+  });
+  
+  // Close suggestions when clicking outside
+  document.addEventListener('click', function(event) {
+    if (!event.target.closest('.search-container')) {
+      suggestionsContainer.classList.remove('active');
+    }
+  });
+  
+  // Handle form submission
+  document.getElementById('search-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+    const query = searchInput.value.toLowerCase();
+    
+    // Hide all packages first
+    document.querySelectorAll('.package-card').forEach(card => {
+      card.style.display = 'none';
+    });
+    
+    // Show only matching packages
+    let matchFound = false;
+    Object.entries(packageData).forEach(([key, package]) => {
+      const packageCard = document.querySelector(`.package-card[onclick="viewDetails('${key}')"]`);
+      if (packageCard && (
+          package.name.toLowerCase().includes(query) || 
+          package.description.toLowerCase().includes(query) ||
+          key.toLowerCase().includes(query)
+        )) {
+        packageCard.style.display = 'block';
+        matchFound = true;
+      }
+    });
+    
+    // If no matches, show a message
+    if (!matchFound) {
+      const grid = document.querySelector('.grid');
+      const noResults = document.createElement('div');
+      noResults.className = 'no-results';
+      noResults.style.gridColumn = '1 / -1';
+      noResults.style.textAlign = 'center';
+      noResults.style.color = '#fff';
+      noResults.style.padding = '50px 0';
+      noResults.innerHTML = `
+        <h3>No packages found for "${query}"</h3>
+        <p>Try adjusting your search or browse all packages</p>
+        <button onclick="resetSearch()" style="padding: 10px 20px; background: #2762f3; color: white; 
+          border: none; border-radius: 5px; margin-top: 15px; cursor: pointer;">
+          Show All Packages
+        </button>
+      `;
+      
+      // Remove any previous "no results" message
+      const existingNoResults = document.querySelector('.no-results');
+      if (existingNoResults) {
+        grid.removeChild(existingNoResults);
+      }
+      
+      grid.appendChild(noResults);
+    }
+    
+    // Clear suggestions
+    suggestionsContainer.classList.remove('active');
+  });
+  
+  // Reset search function
+  function resetSearch() {
+    // Show all packages
+    document.querySelectorAll('.package-card').forEach(card => {
+      card.style.display = 'block';
+    });
+    
+    // Remove any "no results" message
+    const noResults = document.querySelector('.no-results');
+    if (noResults) {
+      noResults.remove();
+    }
+    
+    // Clear search input
+    searchInput.value = '';
+  }
+
+  // Function to toggle the filters sidebar
+  function toggleFilters() {
+    const filtersSidebar = document.getElementById('filters-sidebar');
+    const mainContent = document.getElementById('main-content');
+    const filterToggle = document.getElementById('filter-toggle');
+    
+    // Toggle the active class to show/hide the sidebar
+    filtersSidebar.classList.toggle('active');
+    
+    // Hide/show the filter toggle button based on sidebar visibility
+    if (filtersSidebar.classList.contains('active')) {
+      filterToggle.style.display = 'none';
+      mainContent.style.marginLeft = '250px';
+    } else {
+      filterToggle.style.display = 'flex';
+      mainContent.style.marginLeft = '0';
+    }
+  }
+  
+  function applyFilters() {
+    const minCost = parseInt(document.getElementById("min-cost").value) || 0;
+    const maxCost = parseInt(document.getElementById("max-cost").value) || Infinity;
+    const selectedDuration = document.getElementById("duration").value;
+    const selectedOption = document.getElementById("custom-options").value;
+
+    document.querySelectorAll(".package-card").forEach(card => {
+      const packageCost = parseInt(card.getAttribute("data-cost")) || 0;
+      const packageDuration = card.getAttribute("data-duration") || "any";
+      const packageOptions = card.getAttribute("data-options") || "";
+
+      const costMatch = packageCost >= minCost && packageCost <= maxCost;
+      const durationMatch = selectedDuration === "any" || packageDuration === selectedDuration;
+      const optionMatch = selectedOption === "all" || packageOptions.includes(selectedOption);
+
+      if (costMatch && durationMatch && optionMatch) {
+        card.style.display = "block";
+      } else {
+        card.style.display = "none";
+      }
+    });
+    
+    // On mobile, automatically close the filter sidebar after applying filters
+    if (window.innerWidth <= 768) {
+      toggleFilters();
+    }
+    
+    // Remove any "no results" message that might be displayed from search
+    const noResults = document.querySelector('.no-results');
+    if (noResults) {
+      noResults.remove();
+    }
+  }
+
+  function viewDetails(packageName) {
+    const package = packageData[packageName];
+
+    // Set the content dynamically
+    document.getElementById('package-description').innerText = package.description;
+    document.getElementById('itinerary').innerHTML = package.itinerary.map(day => `<li>${day}</li>`).join('');
+    document.getElementById('cost-breakdown').innerHTML = package.costBreakdown.map(item => `<li>${item}</li>`).join('');
+    document.getElementById('reviews').innerHTML = package.reviews.map(review => `<p>${review}</p>`).join('');
+    document.getElementById('transport-details').innerText = package.transport;
+
+    // Show the modal
+    document.getElementById('package-modal').style.visibility = 'visible';
+    document.getElementById('package-modal').style.opacity = 1;
+  }
+
+  // Function to close the modal
+  function closeModal() {
+    document.getElementById('package-modal').style.visibility = 'hidden';
+    document.getElementById('package-modal').style.opacity = 0;
+  }
+  
+  // If ESC key is pressed, close the modal
+  document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+      closeModal();
+    }
+  });
+  
+  // Current user and timestamp for logging
+  console.log('Page loaded by donlj at 2025-03-06 03:14:29 UTC');
+  </script>
+</body>
+</html>
