@@ -1544,16 +1544,11 @@ function updateAuthUI() {
   }
 }
 
-/**
- * Check if user is logged in
- */
+
 function isLoggedIn() {
   return !!localStorage.getItem('wanderly_auth_token');
 }
 
-/**
- * Get user data from localStorage
- */
 function getUserData() {
   try {
     const userData = localStorage.getItem('wanderly_user_data');
@@ -1564,9 +1559,7 @@ function getUserData() {
   }
 }
 
-/**
- * Initialize user dropdown functionality
- */
+
 function initUserDropdown() {
   const userIcon = document.querySelector('.user-icon');
   const userDropdown = document.querySelector('.user-dropdown');
@@ -1584,7 +1577,6 @@ function initUserDropdown() {
     }
   });
   
-  // Set up logout handler
   const logoutButton = document.getElementById('logoutButton');
   if (logoutButton) {
     logoutButton.addEventListener('click', function(e) {
@@ -1596,9 +1588,7 @@ function initUserDropdown() {
   }
 }
 
-/**
- * Log out the current user
- */
+
 function logout() {
   localStorage.removeItem('wanderly_auth_token');
   localStorage.removeItem('wanderly_user_data');
@@ -1606,11 +1596,8 @@ function logout() {
   window.location.href = 'index.html'; // Reload the page
 }
 
-/**
- * Set up authentication-related behavior for elements
- */
+
 function setupAuthBehavior() {
-  // Add click handlers to booking buttons
   const bookButtons = document.querySelectorAll('.card button, .btn-plan, .explore-btn');
   bookButtons.forEach(button => {
     const originalClick = button.onclick;
@@ -1624,7 +1611,6 @@ function setupAuthBehavior() {
         return false;
       }
       
-      // If logged in, proceed with original click handler if it exists
       if (typeof originalClick === 'function') {
         return originalClick.call(this, e);
       }
@@ -1863,28 +1849,27 @@ function saveTripToDatabase() {
   }, 500);
 }
 
-
 function initializeFestivalSlider() {
-  const track = document.getElementById('festivals-track');
-  const prevButton = document.getElementById('prev-festival');
-  const nextButton = document.getElementById('next-festival');
-  const currentSlideEl = document.querySelector('.current-slide');
-  const totalSlidesEl = document.querySelector('.total-slides');
+  const track = document.querySelector('.festivals-track');
+  const prevButton = document.querySelector('.festival-prev');
+  const nextButton = document.querySelector('.festival-next');
+  const indicator = document.querySelector('.festivals-indicator');
   
   if (!track || !prevButton || !nextButton) return;
   
   let currentSlide = 0;
-  const slides = document.querySelectorAll('.festival-item');
+  const slides = track.querySelectorAll('.festival-item');
   const slideCount = slides.length;
   
   if (slideCount <= 0) return;
   
-  totalSlidesEl.textContent = slideCount;
-  
   // Update slider display
   function updateSlider() {
     track.style.transform = `translateX(-${currentSlide * 100}%)`;
-    currentSlideEl.textContent = currentSlide + 1;
+    
+    if (indicator) {
+      indicator.textContent = `${currentSlide + 1} / ${slideCount}`;
+    }
   }
   
   // Add event listeners to control buttons
@@ -1919,7 +1904,6 @@ function initializeFestivalSlider() {
   // Initialize slider
   updateSlider();
 }
-
 function initializeDestinationFilters() {
   const categoryButtons = document.querySelectorAll('.category-button');
   const destinationItems = document.querySelectorAll('.destination-item');
@@ -1936,13 +1920,22 @@ function initializeDestinationFilters() {
       // Filter destinations
       destinationItems.forEach(item => {
         if (category === 'all' || item.getAttribute('data-category') === category) {
-          item.style.display = 'block';
+          item.classList.remove('hidden'); // Use the class instead of inline style
+          // Optional: add a small animation
+          item.classList.add('highlight');
+          setTimeout(() => item.classList.remove('highlight'), 1000);
         } else {
-          item.style.display = 'none';
+          item.classList.add('hidden'); // Use the class instead of inline style
         }
       });
     });
   });
+  
+  // Set "All" as default active category on page load (if it exists)
+  const allButton = document.querySelector('.category-button[data-category="all"]');
+  if (allButton) {
+    allButton.click();
+  }
 }
 
 function showDestinationDetails(destination) {
@@ -2067,6 +2060,7 @@ function initializeSearchFunction() {
     }
   });
 }
+
 function addWeatherToDestinations() {
   const destinationCards = document.querySelectorAll('.card');
   
